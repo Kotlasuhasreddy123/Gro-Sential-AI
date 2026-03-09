@@ -7,7 +7,54 @@ import os
 import requests
 import json
 import bcrypt
-from shelf_life_data import predict_expiry_date, get_expiry_status, get_expiry_color
+from datetime import datetime, timedelta
+
+# Simple shelf life prediction functions
+def predict_expiry_date(item_name):
+    """Predict expiry date based on item type"""
+    # Default shelf life in days for common items
+    shelf_life = {
+        'milk': 7, 'bread': 5, 'eggs': 21, 'cheese': 14, 'yogurt': 14,
+        'chicken': 2, 'beef': 3, 'fish': 2, 'vegetables': 7, 'fruits': 7,
+        'lettuce': 5, 'tomato': 7, 'apple': 14, 'banana': 5, 'orange': 14
+    }
+    
+    # Find matching item
+    days = 7  # default
+    for key, value in shelf_life.items():
+        if key.lower() in item_name.lower():
+            days = value
+            break
+    
+    return (datetime.now() + timedelta(days=days)).strftime('%Y-%m-%d')
+
+def get_expiry_status(expiry_date):
+    """Get status based on expiry date"""
+    try:
+        expiry = datetime.strptime(expiry_date, '%Y-%m-%d')
+        days_left = (expiry - datetime.now()).days
+        
+        if days_left < 0:
+            return 'Expired'
+        elif days_left <= 2:
+            return 'Expiring Soon'
+        elif days_left <= 7:
+            return 'Use Soon'
+        else:
+            return 'Fresh'
+    except:
+        return 'Unknown'
+
+def get_expiry_color(status):
+    """Get color based on status"""
+    colors = {
+        'Expired': '#ff4444',
+        'Expiring Soon': '#ff8800',
+        'Use Soon': '#ffbb33',
+        'Fresh': '#00C851',
+        'Unknown': '#999999'
+    }
+    return colors.get(status, '#999999')
 
 app = Flask(__name__)
 CORS(app)
