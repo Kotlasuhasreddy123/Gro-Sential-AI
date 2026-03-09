@@ -1,0 +1,47 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Documentation
+*.md
+README*
+CHANGES*
+TODO*
+GUIDE*
+
+# Test files
+test_*.py
+check_*.py
+fix_*.py
+debug_*.py
+add_*.py
+create_*.py
+verify_*.py
+
+# Scripts
+*.bat
+*.sh
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Kiro
+.kiro/
+
+# Git
+.git/
+.gitignore
+
+# Logs
+*.log
+
+# Environment
+.env
+venv/
+env/

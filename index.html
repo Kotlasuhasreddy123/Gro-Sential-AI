@@ -1,0 +1,2904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Gro-Sential - Smart Food Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --bg: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            --card: rgba(255, 255, 255, 0.05);
+            --border: rgba(76, 175, 80, 0.2);
+            --text: #e8eaf6;
+            --text-dim: #9fa8da;
+        }
+        
+        body { 
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 20, 40, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, #81C784 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            text-align: right;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .user-info:hover {
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px auto;
+            max-width: 500px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--card);
+            color: var(--text-dim);
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px 40px 80px;
+        }
+
+        .mode-content {
+            display: none;
+        }
+
+        .mode-content.active {
+            display: block;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        /* Card */
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+
+        /* Inputs */
+        input, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            font-size: 1em;
+            margin-bottom: 15px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        /* Image Preview */
+        .image-preview {
+            width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 2px solid var(--border);
+        }
+
+        /* Ingredient Tags */
+        .ingredient-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(76, 175, 80, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--primary);
+        }
+
+        .tag .remove {
+            cursor: pointer;
+            color: #ff5252;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        /* Recipe Content */
+        .recipe-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            border-radius: 12px;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.8;
+        }
+
+        /* Videos */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .video-frame {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+        }
+
+        .video-frame iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        /* Item List */
+        .item-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border);
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Trade Card */
+        .trade-card-small {
+            opacity: 0.6;
+            padding: 15px !important;
+            margin-bottom: 10px !important;
+        }
+        
+        .trade-card-small .card-title {
+            font-size: 0.9em !important;
+        }
+        
+        .trade-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status-pending { background: rgba(255, 193, 7, 0.2); color: #FFC107; }
+        .status-accepted { background: rgba(33, 150, 243, 0.2); color: #2196F3; }
+        .status-completed { background: rgba(76, 175, 80, 0.2); color: #4CAF50; }
+        .status-cancelled { background: rgba(244, 67, 54, 0.2); color: #F44336; }
+        .status-rejected { background: rgba(244, 67, 54, 0.2); color: #F44336; }
+        .status-counter_offered { background: rgba(156, 39, 176, 0.2); color: #9C27B0; }
+        .status-receiver_offered { background: rgba(76, 175, 80, 0.2); color: #4CAF50; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(15, 20, 40, 0.98);
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid var(--border);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Chatbot */
+        .chatbot-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            font-size: 1.8em;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
+            z-index: 999;
+            transition: transform 0.3s;
+        }
+
+        .chatbot-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: rgba(15, 20, 40, 0.98);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            display: none;
+            flex-direction: column;
+        }
+
+        .chatbot-window.active {
+            display: flex;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 3px solid var(--primary);
+            line-height: 1.6;
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            margin: 0;
+        }
+
+        /* Hidden */
+        .hidden { display: none !important; }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-dim);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Welcome Banner -->
+    <div id="welcomeBanner" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(129, 199, 132, 0.1) 100%); padding: 12px 20px; text-align: center; border-bottom: 2px solid rgba(76, 175, 80, 0.3);">
+        <span style="font-size: 1.1em; color: var(--primary); font-weight: 600; letter-spacing: 0.5px;">
+            👋 Welcome to Gro-Sential! We're so glad you're here 💚
+        </span>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div>
+                <div class="logo">🌱 Gro-Sential</div>
+                <div style="font-size: 0.75em; color: var(--text-dim); margin-top: 2px; font-weight: 400;">
+                    <span style="color: var(--primary);">Gro</span>ceries + Es<span style="color: var(--primary);">sential</span> = Smart Living
+                </div>
+            </div>
+            <div class="user-section">
+                <div class="user-info" id="userInfo" onclick="showLogin()">
+                    <div style="font-weight: 600;" id="userName">Guest</div>
+                    <div style="font-size: 0.85em; color: var(--text-dim);" id="userStats">Click to login</div>
+                </div>
+                <button id="logoutBtn" class="btn btn-secondary" onclick="logout()" style="display: none; margin-left: 10px; padding: 8px 16px;">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div id="heroSection" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(33, 150, 243, 0.1) 100%); padding: 60px 20px; text-align: center; border-bottom: 1px solid var(--border);">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <!-- Welcome Message -->
+            <div style="display: inline-block; padding: 12px 30px; background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(129, 199, 132, 0.15) 100%); border-radius: 30px; margin-bottom: 25px; border: 2px solid rgba(76, 175, 80, 0.4); box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);">
+                <span style="font-size: 1.15em; color: var(--primary); font-weight: 600; letter-spacing: 0.5px;">
+                    👋 Welcome to Gro-Sential! We're so glad you're here 💚
+                </span>
+            </div>
+            
+            <h1 style="font-size: 2.5em; font-weight: 700; margin-bottom: 20px; background: linear-gradient(135deg, var(--primary) 0%, #81C784 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Share Food, Save Money, Help Planet
+            </h1>
+            <p style="font-size: 1.2em; color: var(--text-dim); margin-bottom: 30px; line-height: 1.6;">
+                Turn expiring groceries into delicious recipes or trade with neighbors - reducing waste while building community.
+            </p>
+            
+            <!-- Key Stats -->
+            <div style="display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="font-size: 2em; font-weight: 700; color: var(--primary);">AI-Powered</div>
+                    <div style="font-size: 0.9em; color: var(--text-dim);">Smart Recipes</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2em; font-weight: 700; color: var(--primary);">100% Free</div>
+                    <div style="font-size: 0.9em; color: var(--text-dim);">Always & Forever</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2em; font-weight: 700; color: var(--primary);">Zero Waste</div>
+                    <div style="font-size: 0.9em; color: var(--text-dim);">Eco-Friendly</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="document.getElementById('heroSection').style.display='none'; document.querySelector('.mode-toggle').scrollIntoView({behavior: 'smooth'});" style="font-size: 1.1em; padding: 15px 40px;">
+                Get Started Free 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- Value Proposition -->
+    <div style="padding: 50px 20px; max-width: 1200px; margin: 0 auto;">
+        <!-- About Gro-Sential -->
+        <div style="text-align: center; margin-bottom: 50px; padding: 30px; background: rgba(76, 175, 80, 0.05); border-radius: 12px; border: 1px solid var(--border);">
+            <h2 style="font-size: 2em; color: var(--primary); margin-bottom: 20px;">What is Gro-Sential?</h2>
+            <p style="font-size: 1.1em; color: var(--text); line-height: 1.8; max-width: 800px; margin: 0 auto;">
+                <strong style="color: var(--primary);">Gro-Sential</strong> combines <span style="color: var(--primary); font-weight: 600;">Gro</span>ceries with Es<span style="color: var(--primary); font-weight: 600;">sential</span> living - 
+                a revolutionary platform that transforms how you manage food. Using AI-powered technology, we help you create delicious recipes from what you have, 
+                trade surplus items with neighbors, and never waste food again. Join a community that's making sustainable living simple, social, and rewarding.
+            </p>
+            <div style="margin-top: 25px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 1.5em;">🤖</span>
+                    <span style="color: var(--text-dim);">AWS AI-Powered</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 1.5em;">🌍</span>
+                    <span style="color: var(--text-dim);">Eco-Friendly</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 1.5em;">🤝</span>
+                    <span style="color: var(--text-dim);">Community-Driven</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 1.5em;">💰</span>
+                    <span style="color: var(--text-dim);">Save Money</span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 50px;">
+            <div style="background: var(--card); padding: 30px; border-radius: 12px; border: 1px solid var(--border); text-align: center;">
+                <div style="font-size: 3em; margin-bottom: 15px;">🍳</div>
+                <h3 style="color: var(--primary); margin-bottom: 15px;">Smart Recipe Generation</h3>
+                <p style="color: var(--text-dim); line-height: 1.6;">Never waste food again - get instant AI-powered recipes from ingredients you already have</p>
+            </div>
+            <div style="background: var(--card); padding: 30px; border-radius: 12px; border: 1px solid var(--border); text-align: center;">
+                <div style="font-size: 3em; margin-bottom: 15px;">🔄</div>
+                <h3 style="color: var(--primary); margin-bottom: 15px;">Community Food Trading</h3>
+                <p style="color: var(--text-dim); line-height: 1.6;">Save money and reduce waste by exchanging surplus groceries with neighbors nearby</p>
+            </div>
+            <div style="background: var(--card); padding: 30px; border-radius: 12px; border: 1px solid var(--border); text-align: center;">
+                <div style="font-size: 3em; margin-bottom: 15px;">⏰</div>
+                <h3 style="color: var(--primary); margin-bottom: 15px;">Expiry Alerts</h3>
+                <p style="color: var(--text-dim); line-height: 1.6;">Stay organized with automatic notifications - use food before it spoils</p>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <div style="background: rgba(76, 175, 80, 0.05); padding: 40px; border-radius: 12px; border: 1px solid var(--border);">
+            <h2 style="text-align: center; font-size: 2em; margin-bottom: 40px; color: var(--primary);">How It Works</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                <div style="text-align: center;">
+                    <div style="width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.5em; font-weight: 700;">1</div>
+                    <h4 style="margin-bottom: 10px; color: var(--text);">📸 Scan or Add</h4>
+                    <p style="color: var(--text-dim); font-size: 0.9em;">Upload food photos or manually add items to your inventory</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.5em; font-weight: 700;">2</div>
+                    <h4 style="margin-bottom: 10px; color: var(--text);">🍳 Cook or Trade</h4>
+                    <p style="color: var(--text-dim); font-size: 0.9em;">Get AI recipes or find trading partners nearby</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.5em; font-weight: 700;">3</div>
+                    <h4 style="margin-bottom: 10px; color: var(--text);">🌱 Save & Share</h4>
+                    <p style="color: var(--text-dim); font-size: 0.9em;">Reduce waste, save money, help the planet</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Mode Selection with Descriptions -->
+    <div class="container" style="margin-top: 40px;">
+        <h2 style="text-align: center; font-size: 2em; margin-bottom: 40px; color: var(--text);">Choose Your Mode</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-bottom: 30px;">
+            <!-- Recipe Mode Card -->
+            <div style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(129, 199, 132, 0.05) 100%); padding: 30px; border-radius: 16px; border: 2px solid var(--border); transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden;" 
+                 onclick="switchMode('recipe'); this.parentElement.nextElementSibling.querySelector('.mode-btn:first-child').click();"
+                 onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--primary)';"
+                 onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
+                <div style="position: absolute; top: -20px; right: -20px; font-size: 120px; opacity: 0.05;">🍳</div>
+                <div style="position: relative; z-index: 1;">
+                    <div style="font-size: 3.5em; margin-bottom: 15px;">🍳</div>
+                    <h3 style="font-size: 1.8em; color: var(--primary); margin-bottom: 15px; font-weight: 700;">Recipe Mode</h3>
+                    <p style="color: var(--text-dim); font-size: 1.05em; line-height: 1.6; margin-bottom: 20px;">
+                        Transform your ingredients into delicious meals! Upload food photos or add items manually, then get instant AI-powered recipe suggestions tailored to what you have.
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--primary); font-size: 1.2em;">✓</span>
+                            <span style="color: var(--text-dim);">Scan food with your camera</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--primary); font-size: 1.2em;">✓</span>
+                            <span style="color: var(--text-dim);">Get AI recipe suggestions</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--primary); font-size: 1.2em;">✓</span>
+                            <span style="color: var(--text-dim);">Never waste food again</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 25px; padding: 15px; background: rgba(76, 175, 80, 0.15); border-radius: 8px; text-align: center;">
+                        <span style="color: var(--primary); font-weight: 600; font-size: 1.1em;">👉 Click to Start Cooking</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trade Mode Card -->
+            <div style="background: linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(100, 181, 246, 0.05) 100%); padding: 30px; border-radius: 16px; border: 2px solid var(--border); transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden;"
+                 onclick="switchMode('sharing'); this.parentElement.nextElementSibling.querySelector('.mode-btn:last-child').click();"
+                 onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#2196F3';"
+                 onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border)';">
+                <div style="position: absolute; top: -20px; right: -20px; font-size: 120px; opacity: 0.05;">🔄</div>
+                <div style="position: relative; z-index: 1;">
+                    <div style="font-size: 3.5em; margin-bottom: 15px;">🔄</div>
+                    <h3 style="font-size: 1.8em; color: #2196F3; margin-bottom: 15px; font-weight: 700;">Trade Mode</h3>
+                    <p style="color: var(--text-dim); font-size: 1.05em; line-height: 1.6; margin-bottom: 20px;">
+                        Share surplus groceries with your community! Browse items from neighbors, request trades, and exchange food you don't need for items you want.
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color: #2196F3; font-size: 1.2em;">✓</span>
+                            <span style="color: var(--text-dim);">Browse nearby food items</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color: #2196F3; font-size: 1.2em;">✓</span>
+                            <span style="color: var(--text-dim);">Trade with your neighbors</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color: #2196F3; font-size: 1.2em;">✓</span>
+                            <span style="color: var(--text-dim);">Save money & reduce waste</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 25px; padding: 15px; background: rgba(33, 150, 243, 0.15); border-radius: 8px; text-align: center;">
+                        <span style="color: #2196F3; font-weight: 600; font-size: 1.1em;">👉 Click to Start Trading</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode Toggle Buttons -->
+        <div class="mode-toggle" style="margin-top: 20px;">
+            <button class="mode-btn active" onclick="switchMode('recipe')">🍳 Recipe Mode</button>
+            <button class="mode-btn" onclick="switchMode('sharing')">🔄 Trade Mode</button>
+        </div>
+
+        <!-- RECIPE MODE -->
+        <div id="recipeMode" class="mode-content active">
+            <!-- Upload & Ingredients -->
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3 class="card-title"> Upload Food Image</h3>
+                    <input type="file" id="imageInput" accept="image/*" onchange="previewImage()">
+                    <img id="imagePreview" class="image-preview hidden">
+                    <button class="btn btn-primary" onclick="scanImage()" style="width: 100%;">
+                        Scan & Detect Ingredients
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">🥗 Detected Ingredients</h3>
+                    <div id="ingredientTags" class="ingredient-tags"></div>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="newIngredient" name="ingredient-search-field" placeholder="Add ingredient..." 
+                               autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false"
+                               data-form-type="other"
+                               style="margin: 0;" 
+                               onkeydown="if(event.key==='Enter'){event.preventDefault();addIngredient();}">
+                        <button class="btn btn-primary" onclick="addIngredient()">Add</button>
+                    </div>
+                    
+                    <button class="btn btn-secondary" onclick="loadInventoryForRecipe()" style="width: 100%; margin-top: 15px;">
+                        📦 Add from My Inventory
+                    </button>
+                    
+                    <button class="btn btn-primary" onclick="generateRecipe()" style="width: 100%; margin-top: 20px;">
+                        🍳 Generate AI Recipe
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recipe -->
+            <div id="recipeSection" class="hidden">
+                <div class="card">
+                    <h3 class="card-title">‍ Your Custom Recipe</h3>
+                    <div id="recipeContent" class="recipe-box"></div>
+                </div>
+
+                <!-- Videos -->
+                <div class="card">
+                    <h3 class="card-title"> Cooking Video Tutorials</h3>
+                    <div id="videoGrid" class="video-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRADE MODE -->
+        <div id="sharingMode" class="mode-content">
+            <div id="loginPrompt" class="card">
+                <h3 class="card-title"> Login Required</h3>
+                <p style="color: var(--text-dim); margin-bottom: 20px;">Please login to access food sharing features.</p>
+                <button class="btn btn-primary" onclick="showLogin()">Login / Register</button>
+            </div>
+
+            <div id="sharingContent" class="hidden">
+                <!-- AI Alerts Section -->
+                <div id="aiAlerts" class="card" style="background: linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 87, 34, 0.1) 100%); border: 2px solid rgba(255, 152, 0, 0.3); display: none;">
+                    <h3 class="card-title"> AI Alerts</h3>
+                    <div id="aiAlertsList"></div>
+                </div>
+
+                <!-- Add Items -->
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h3 class="card-title"> Add by Photo</h3>
+                        <input type="file" id="inventoryImageInput" accept="image/*" onchange="previewInventoryImage()">
+                        <img id="inventoryPreview" class="image-preview hidden">
+                        <button class="btn btn-primary" onclick="scanForInventory()" style="width: 100%;">
+                            Scan & Detect Items
+                        </button>
+                        
+                        <!-- Detected Items Preview -->
+                        <div id="detectedItemsPreview" class="hidden" style="margin-top: 20px;">
+                            <h4 style="color: var(--primary); margin-bottom: 15px;">Detected Items (Review & Edit)</h4>
+                            <div id="detectedItemsList" class="item-list"></div>
+                            <button class="btn btn-primary" onclick="saveDetectedItems()" style="width: 100%; margin-top: 15px;">
+                                Save All to Inventory
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title"> Add Manually</h3>
+                        <input type="text" id="manualItemName" placeholder="Item name"
+                               onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('manualItemQty').focus();}">
+                        <input type="number" id="manualItemQty" placeholder="Quantity" min="1" value="1"
+                               onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('manualItemExpiry').focus();}">
+                        <input type="date" id="manualItemExpiry" placeholder="Expiry Date (optional)"
+                               onkeydown="if(event.key==='Enter'){event.preventDefault();addManualItem();}">
+                        <button class="btn btn-primary" onclick="addManualItem()" style="width: 100%;">
+                            Add to Inventory
+                        </button>
+                    </div>
+                </div>
+
+                <!-- My Inventory -->
+                <div class="card">
+                    <h3 class="card-title"> My Inventory</h3>
+                    <div id="inventoryList" class="item-list"></div>
+                </div>
+
+                <!-- Search Items -->
+                <div class="card">
+                    <h3 class="card-title"> Search Items Nearby</h3>
+                    
+                    <!-- Pincode Selector -->
+                    <div style="margin-bottom: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-radius: 8px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;"> Search Area:</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="text" id="searchPincode" placeholder="Enter pincode..." 
+                                   style="margin: 0; flex: 1;" value="">
+                            <button class="btn btn-secondary" onclick="useMyPincode()" style="white-space: nowrap;">Use This Pincode</button>
+                        </div>
+                        <p style="font-size: 0.85em; color: #888; margin: 5px 0 0 0;">
+                            Searching in: <span id="currentSearchPincode" style="color: #4CAF50; font-weight: 500;">60070</span>
+                        </p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <input type="text" id="searchInput" placeholder="Search for item..." style="margin: 0;"
+                               onkeydown="if(event.key==='Enter'){event.preventDefault();searchItems();}">
+                        <button class="btn btn-primary" onclick="searchItems()">Search</button>
+                        <button class="btn btn-secondary" onclick="browseAll()">Browse All</button>
+                    </div>
+                    <div id="searchResults" class="item-list"></div>
+                </div>
+
+                <!-- My Trades -->
+                <div class="card">
+                    <h3 class="card-title"> My Trades</h3>
+                    <div id="tradesList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2 class="card-title">Welcome to Gro-Sential</h2>
+            <div id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email"
+                       onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('loginPassword').focus();}">
+                <input type="password" id="loginPassword" placeholder="Password"
+                       onkeydown="if(event.key==='Enter'){event.preventDefault();login();}">
+                <button class="btn btn-primary" onclick="login()" style="width: 100%; margin-bottom: 10px;">Login</button>
+                <button class="btn btn-secondary" onclick="showRegister()" style="width: 100%;">New User? Register</button>
+            </div>
+            <div id="registerForm" class="hidden">
+                <input type="text" id="regName" placeholder="Full Name"
+                       onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('regEmail').focus();}">
+                <input type="email" id="regEmail" placeholder="Email"
+                       onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('regPassword').focus();}">
+                <input type="password" id="regPassword" placeholder="Password (min 6 characters)"
+                       onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('regConfirmPassword').focus();}">
+                <input type="password" id="regConfirmPassword" placeholder="Confirm Password"
+                       onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('regPincode').focus();}">
+                <input type="text" id="regPincode" placeholder="Pincode (e.g., 60070)"
+                       onkeydown="if(event.key==='Enter'){event.preventDefault();register();}">
+                <button class="btn btn-primary" onclick="register()" style="width: 100%; margin-bottom: 10px;">Register</button>
+                <button class="btn btn-secondary" onclick="showLoginForm()" style="width: 100%;">Back to Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trade Modal -->
+    <div id="tradeModal" class="modal">
+        <div class="modal-content">
+            <h2 class="card-title">Request Trade</h2>
+            <p style="margin-bottom: 20px; color: var(--text-dim);">
+                Item: <strong id="tradeItemName"></strong><br>
+                From: <strong id="tradeProviderName"></strong><br>
+                Value: $<span id="tradeMarketValue">0</span>
+            </p>
+            
+            <h4 style="margin: 20px 0 10px; color: var(--primary);">📦 Quantity</h4>
+            <input type="number" id="tradeQuantity" placeholder="Quantity" min="1">
+            
+            <!-- Select Items to Offer -->
+            <h4 style="margin: 20px 0 10px; color: var(--primary);">🔄 Select Items to Offer:</h4>
+            <p style="font-size: 0.9em; color: var(--text-dim); margin-bottom: 10px;">
+                Choose items from your inventory to trade (match the value for a fair exchange):
+            </p>
+            <div id="suggestedTradeItems" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px; padding: 10px; background: rgba(33, 150, 243, 0.05); border-radius: 8px; border: 1px solid rgba(33, 150, 243, 0.2);">
+                <p style="color: #888;">Loading your items...</p>
+            </div>
+            
+            <h4 style="margin: 20px 0 10px; color: var(--primary);"> How will they recognize you?</h4>
+            <p style="font-size: 0.9em; color: var(--text-dim); margin-bottom: 10px;">
+                Help the other person identify you at the meetup
+            </p>
+            <input type="text" id="userIdentifier" placeholder="e.g., 'Wearing red jacket' or 'Carrying blue bag'"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('customLocation').focus();}">
+            <p style="font-size: 0.85em; color: var(--text-dim); margin-top: 5px;">
+                 Examples: "Red shirt", "Blue cap", "Carrying green bag", "Wearing glasses"
+            </p>
+            
+            <h4 style="margin: 20px 0 10px; color: var(--primary);"> Meetup Location</h4>
+            <p style="font-size: 0.9em; color: var(--text-dim); margin-bottom: 10px;">
+                AI Suggestion: <span id="suggestedLocation"></span>
+            </p>
+            <input type="text" id="customLocation" placeholder="Or enter custom location"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('customTime').focus();}">
+            
+            <h4 style="margin: 20px 0 10px; color: var(--primary);">⏰ Meetup Time</h4>
+            <p style="font-size: 0.9em; color: var(--text-dim); margin-bottom: 10px;">
+                AI Suggestion: <span id="suggestedTime"></span>
+            </p>
+            <input type="text" id="customTime" placeholder="Or enter custom time"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('customReason').focus();}">
+            
+            <textarea id="customReason" placeholder="Reason for custom location/time (e.g., 'I'm elderly and can't travel far')" rows="3"></textarea>
+            
+            <!-- Message Field -->
+            <h4 style="margin: 20px 0 10px; color: var(--primary);">💬 Message (Optional)</h4>
+            <textarea id="tradeMessage" placeholder="Add a message to the provider (e.g., 'I really need this item', 'Can we meet earlier?')" rows="3"></textarea>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="submitTrade()" style="flex: 1;">Send Request</button>
+                <button class="btn btn-secondary" onclick="closeTradeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <button class="chatbot-btn" onclick="toggleChatbot()">💬</button>
+    <div id="chatbotWindow" class="chatbot-window">
+        <div class="chat-header">
+            <h3 style="font-size: 1.1em;">Gro-Sential Assistant</h3>
+            <button class="btn btn-secondary btn-small" onclick="toggleChatbot()">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message">
+                 Hi! I'm your Gro-Sential assistant. Ask me anything about recipes, sharing food, or how to use the app!
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Ask me anything..." 
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();sendChat();}">
+            <button class="btn btn-primary btn-small" onclick="sendChat()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Version: 2.1.0 - Trade Negotiation Fixed (Cache-Busting Update)
+        // - Provider's negotiation message now visible to requester
+        // - Requester can update offer with new items
+        // - Fixed "undefined" item display issue
+        // Global State
+        let currentUser = null;
+        let currentIngredients = [];
+        let detectedInventoryItems = [];
+        let tradeRequestData = {};
+
+        // Test function for negotiation feature
+        function testNegotiationFeature() {
+            if (!currentUser) {
+                alert('Please login first to test the feature!');
+                return;
+            }
+            
+            fetch(`/trade/user/${currentUser.email}`)
+                .then(r => r.json())
+                .then(data => {
+                    const allTrades = [...(data.requested || []), ...(data.received || [])];
+                    const tradesWithMessages = allTrades.filter(t => t.CounterOffer && t.CounterOffer !== '');
+                    
+                    if (tradesWithMessages.length === 0) {
+                        alert(`❌ No trades with negotiation messages found!\n\nYou have ${allTrades.length} total trade(s), but none have negotiation messages yet.\n\nTo test:\n1. Login as provider\n2. Send a negotiation message\n3. Login back as requester\n4. The message will appear!`);
+                    } else {
+                        alert(`✅ Found ${tradesWithMessages.length} trade(s) with negotiation messages!\n\nThe negotiation UI should be visible in "My Trades" tab.\n\nIf you don't see it, scroll down in the trade card.`);
+                        console.log('Trades with messages:', tradesWithMessages);
+                    }
+                })
+                .catch(err => {
+                    alert('Error checking trades: ' + err.message);
+                });
+        }
+
+        // Initialize
+        window.onload = function() {
+            // Version check - helps verify cache is cleared
+            console.log('%c🚀 Gro-Sential v2.1.0 - Trade Negotiation Fixed', 'color: #4CAF50; font-size: 16px; font-weight: bold;');
+            console.log('%c✅ Negotiation messages now visible', 'color: #9C27B0;');
+            console.log('%c✅ Update offer UI implemented', 'color: #FFC107;');
+            console.log('%c✅ Item names display correctly', 'color: #2196F3;');
+            console.log('%cIf you don\'t see these features, clear your browser cache (Ctrl+Shift+R)', 'color: #FF5722; font-weight: bold;');
+            
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    updateUserUI();
+                    console.log('✅ User session restored:', currentUser.email);
+                    
+                    // Hide hero section and welcome banner if user is logged in
+                    const heroSection = document.getElementById('heroSection');
+                    if (heroSection) heroSection.style.display = 'none';
+                    
+                    const welcomeBanner = document.getElementById('welcomeBanner');
+                    if (welcomeBanner) welcomeBanner.style.display = 'none';
+                } catch (e) {
+                    console.error('Failed to restore session:', e);
+                    localStorage.removeItem('currentUser');
+                }
+            }
+            
+            // Force clear ingredient input to prevent email autofill
+            setTimeout(function() {
+                const ingredientInput = document.getElementById('newIngredient');
+                if (ingredientInput) {
+                    ingredientInput.value = '';
+                }
+            }, 100);
+            
+            // Also clear it after a short delay to catch late autofills
+            setTimeout(function() {
+                const ingredientInput = document.getElementById('newIngredient');
+                if (ingredientInput && ingredientInput.value.includes('@')) {
+                    ingredientInput.value = '';
+                }
+            }, 500);
+            
+            // Add focus event to clear if email is present
+            const ingredientInput = document.getElementById('newIngredient');
+            if (ingredientInput) {
+                ingredientInput.addEventListener('focus', function() {
+                    if (this.value.includes('@')) {
+                        this.value = '';
+                    }
+                });
+                
+                // Monitor for changes and clear if email appears
+                ingredientInput.addEventListener('input', function() {
+                    if (this.value.includes('@')) {
+                        this.value = '';
+                    }
+                });
+            }
+        };
+
+        // Mode Switching
+        function switchMode(mode) {
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('.mode-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(mode + 'Mode').classList.add('active');
+
+            // Clear ingredient input when switching to recipe mode
+            if (mode === 'recipe') {
+                setTimeout(function() {
+                    const ingredientInput = document.getElementById('newIngredient');
+                    if (ingredientInput && ingredientInput.value.includes('@')) {
+                        ingredientInput.value = '';
+                    }
+                }, 100);
+            }
+
+            if (mode === 'sharing') {
+                if (currentUser) {
+                    // User is logged in - show content
+                    document.getElementById('loginPrompt').classList.add('hidden');
+                    document.getElementById('sharingContent').classList.remove('hidden');
+                    loadInventory();
+                    loadTrades();
+                    checkExpiringItems();
+                } else {
+                    // User not logged in - show login prompt
+                    document.getElementById('loginPrompt').classList.remove('hidden');
+                    document.getElementById('sharingContent').classList.add('hidden');
+                }
+            }
+        }
+
+        // Image Preview
+        function previewImage() {
+            const file = document.getElementById('imageInput').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewInventoryImage() {
+            const file = document.getElementById('inventoryImageInput').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('inventoryPreview');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Scan Image
+        async function scanImage() {
+            console.log('scanImage called');
+            const fileInput = document.getElementById('imageInput');
+            if (!fileInput.files[0]) {
+                alert('Please select an image first');
+                return;
+            }
+
+            console.log('File selected:', fileInput.files[0].name);
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+
+            try {
+                console.log('Sending scan request...');
+                const response = await fetch('/scan', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                console.log('Scan response status:', response.status);
+                const data = await response.json();
+                console.log('Scan response data:', data);
+
+                if (data.status === 'success') {
+                    console.log('Raw ingredients:', data.ingredients);
+                    currentIngredients = data.ingredients.filter(ing => ing !== "No specific food detected");
+                    console.log('Filtered ingredients:', currentIngredients);
+                    displayIngredients();
+                } else {
+                    console.error('Scan failed:', data);
+                    alert('Scan failed: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error in scanImage:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Display Ingredients
+        function displayIngredients() {
+            const container = document.getElementById('ingredientTags');
+            if (currentIngredients.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-dim);">No ingredients detected. Add manually below.</p>';
+                return;
+            }
+            container.innerHTML = currentIngredients.map(ing => `
+                <div class="tag">
+                    <span>${ing}</span>
+                    <span class="remove" onclick="removeIngredient('${ing}')">×</span>
+                </div>
+            `).join('');
+        }
+
+        // Add Ingredient
+        function addIngredient() {
+            const input = document.getElementById('newIngredient');
+            const ingredient = input.value.trim();
+            if (ingredient && !currentIngredients.includes(ingredient)) {
+                currentIngredients.push(ingredient);
+                displayIngredients();
+                input.value = '';
+            }
+        }
+
+        // Remove Ingredient
+        function removeIngredient(ingredient) {
+            currentIngredients = currentIngredients.filter(ing => ing !== ingredient);
+            displayIngredients();
+        }
+
+        // Load Inventory Items for Recipe
+        async function loadInventoryForRecipe() {
+            if (!currentUser) {
+                alert('Please login first');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/inventory/list/${currentUser.email}`);
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.items && data.items.length > 0) {
+                    // Create a modal to show inventory items
+                    const itemsList = data.items.map(item => 
+                        `<label style="display: block; padding: 10px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); margin-bottom: 5px; border-radius: 4px;">
+                            <input type="checkbox" value="${item.ItemName}" style="margin-right: 10px; cursor: pointer;">
+                            <span style="font-size: 1em;">${item.ItemName} (x${item.Quantity})</span>
+                        </label>`
+                    ).join('');
+                    
+                    const modal = document.createElement('div');
+                    modal.id = 'inventoryModal';
+                    modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 10000;';
+                    modal.innerHTML = `
+                        <div style="background: #1a2332; padding: 30px; border-radius: 12px; max-width: 500px; max-height: 80vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.5); border: 1px solid rgba(76, 175, 80, 0.3);">
+                            <h3 style="margin-top: 0; color: #4CAF50;">📦 Select Ingredients from Inventory</h3>
+                            <div id="inventoryItemsList" style="margin: 20px 0;">${itemsList}</div>
+                            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                <button class="btn btn-primary" onclick="addSelectedInventoryItems()" style="flex: 1;">✅ Add Selected</button>
+                                <button class="btn btn-secondary" onclick="closeInventoryModal()" style="flex: 1;">❌ Cancel</button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                } else {
+                    alert('No items in your inventory');
+                }
+            } catch (error) {
+                console.error('Error loading inventory:', error);
+                alert('Failed to load inventory');
+            }
+        }
+
+        // Close inventory modal
+        function closeInventoryModal() {
+            const modal = document.getElementById('inventoryModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // Add selected inventory items to recipe ingredients
+        function addSelectedInventoryItems() {
+            const checkboxes = document.querySelectorAll('#inventoryItemsList input[type="checkbox"]:checked');
+            let addedCount = 0;
+            
+            checkboxes.forEach(cb => {
+                const itemName = cb.value;
+                if (!currentIngredients.includes(itemName)) {
+                    currentIngredients.push(itemName);
+                    addedCount++;
+                }
+            });
+            
+            if (addedCount > 0) {
+                displayIngredients();
+                alert(`✅ Added ${addedCount} ingredient(s) to recipe!`);
+            } else {
+                alert('Please select at least one item');
+            }
+            
+            // Close modal
+            closeInventoryModal();
+        }
+
+        // Generate Recipe (AI-Powered)
+        async function generateRecipe() {
+            console.log('generateRecipe called');
+            console.log('Current ingredients:', currentIngredients);
+            
+            if (currentIngredients.length === 0) {
+                alert('Please add at least one ingredient');
+                return;
+            }
+
+            try {
+                console.log('Sending request to /generate_recipe_ai');
+                
+                // Get dietary restrictions if field exists
+                const dietaryField = document.getElementById('dietaryRestrictions');
+                const dietaryRestrictions = dietaryField ? dietaryField.value.trim() : '';
+                
+                const response = await fetch('/generate_recipe_ai', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        ingredients: currentIngredients,
+                        dietary_restrictions: dietaryRestrictions || null
+                    })
+                });
+                
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                if (data.status === 'success') {
+                    console.log('AI Recipe received, displaying...');
+                    
+                    // Display recipe
+                    document.getElementById('recipeContent').textContent = data.recipe;
+                    
+                    // Display videos
+                    const videoGrid = document.getElementById('videoGrid');
+                    if (data.video_embeds && data.video_embeds.length > 0) {
+                        console.log('Displaying', data.video_embeds.length, 'videos');
+                        videoGrid.innerHTML = data.video_embeds.map(url => `
+                            <div class="video-frame">
+                                <iframe src="${url}" allowfullscreen></iframe>
+                            </div>
+                        `).join('');
+                    }
+
+                    // Show recipe section
+                    document.getElementById('recipeSection').classList.remove('hidden');
+                    console.log('Recipe section shown');
+                    
+                    // Scroll to recipe
+                    document.getElementById('recipeSection').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    console.error('AI Recipe generation failed:', data);
+                    alert('Failed to generate recipe: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error in generateRecipe:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Login/Register
+        function showLogin() {
+            document.getElementById('loginModal').classList.add('active');
+            showLoginForm();
+        }
+
+        function showLoginForm() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+        }
+
+        async function login() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    currentUser = data.user;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    document.getElementById('loginModal').classList.remove('active');
+                    
+                    // Hide hero section and welcome banner after login
+                    const heroSection = document.getElementById('heroSection');
+                    if (heroSection) heroSection.style.display = 'none';
+                    
+                    const welcomeBanner = document.getElementById('welcomeBanner');
+                    if (welcomeBanner) welcomeBanner.style.display = 'none';
+                    
+                    updateUserUI();
+                    
+                    // Clear password field
+                    document.getElementById('loginPassword').value = '';
+                    
+                    // Clear ingredient input to prevent email autofill
+                    const ingredientInput = document.getElementById('newIngredient');
+                    if (ingredientInput) {
+                        ingredientInput.value = '';
+                    }
+                    
+                    // If in sharing mode, load content
+                    if (document.getElementById('sharingMode').classList.contains('active')) {
+                        document.getElementById('loginPrompt').classList.add('hidden');
+                        document.getElementById('sharingContent').classList.remove('hidden');
+                        loadInventory();
+                        loadTrades();
+                        checkExpiringItems(); // AI: Check for expiring items on login
+                    }
+                } else {
+                    alert(data.message || 'Login failed');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function register() {
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const pincode = document.getElementById('regPincode').value.trim();
+
+            if (!name || !email || !password || !confirmPassword || !pincode) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, pincode })
+                });
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert('Registration successful! Please login.');
+                    showLoginForm();
+                    document.getElementById('loginEmail').value = email;
+                    // Clear password fields
+                    document.getElementById('regPassword').value = '';
+                    document.getElementById('regConfirmPassword').value = '';
+                } else {
+                    alert(data.message || 'Registration failed');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        // Pincode changer functions
+        function useMyPincode() {
+            const pincodeInput = document.getElementById('searchPincode').value.trim();
+            
+            if (pincodeInput) {
+                // Use the entered pincode
+                document.getElementById('currentSearchPincode').textContent = pincodeInput;
+                alert(`Search area set to pincode: ${pincodeInput}`);
+            } else if (currentUser) {
+                // If no pincode entered, use user's pincode
+                document.getElementById('searchPincode').value = currentUser.pincode;
+                document.getElementById('currentSearchPincode').textContent = currentUser.pincode;
+                alert(`Using your pincode: ${currentUser.pincode}`);
+            } else {
+                alert('Please enter a pincode or login first');
+            }
+        }
+
+        function updateUserUI() {
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userStats').textContent = 
+                    `📍 ${currentUser.pincode} | ⭐ ${currentUser.karma} bonus pts | 📦 ${currentUser.totalItems} items`;
+                document.getElementById('logoutBtn').style.display = 'block';
+                document.getElementById('userInfo').onclick = null; // Disable login click when logged in
+            } else {
+                document.getElementById('userName').textContent = 'Guest';
+                document.getElementById('userStats').textContent = 'Click to login';
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('userInfo').onclick = showLogin;
+            }
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                updateUserUI();
+                
+                // Clear any loaded data
+                document.getElementById('inventoryList').innerHTML = '';
+                document.getElementById('tradesList').innerHTML = '';
+                document.getElementById('searchResults').innerHTML = '';
+                
+                // Switch to recipe mode
+                switchMode('recipe');
+                
+                alert('Logged out successfully');
+            }
+        }
+
+        // Inventory Management
+        async function scanForInventory() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+
+            const fileInput = document.getElementById('inventoryImageInput');
+            if (!fileInput.files[0]) {
+                alert('Please select an image first');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+
+            try {
+                const response = await fetch('/scan', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    detectedInventoryItems = data.ingredients
+                        .filter(ing => ing !== "No specific food detected")
+                        .map(ing => ({ name: ing, quantity: 1 }));
+
+                    if (detectedInventoryItems.length > 0) {
+                        displayDetectedItems();
+                    } else {
+                        alert('No items detected. Try a clearer image or add manually.');
+                    }
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        function displayDetectedItems() {
+            const container = document.getElementById('detectedItemsList');
+            container.innerHTML = detectedInventoryItems.map((item, index) => `
+                <div class="item">
+                    <div>
+                        <input type="text" value="${item.name}" 
+                               onchange="detectedInventoryItems[${index}].name = this.value"
+                               style="width: 200px; margin: 0; padding: 8px;">
+                        <input type="number" value="${item.quantity}" min="1"
+                               onchange="detectedInventoryItems[${index}].quantity = parseInt(this.value)"
+                               style="width: 80px; margin: 0 0 0 10px; padding: 8px;">
+                    </div>
+                    <button class="btn btn-secondary btn-small" onclick="removeDetectedItem(${index})">Remove</button>
+                </div>
+            `).join('');
+            document.getElementById('detectedItemsPreview').classList.remove('hidden');
+        }
+
+        function removeDetectedItem(index) {
+            detectedInventoryItems.splice(index, 1);
+            displayDetectedItems();
+        }
+
+        async function saveDetectedItems() {
+            if (detectedInventoryItems.length === 0) return;
+
+            try {
+                const response = await fetch('/inventory/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: currentUser.email,
+                        items: detectedInventoryItems
+                    })
+                });
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert(`Added ${detectedInventoryItems.length} items to inventory!`);
+                    detectedInventoryItems = [];
+                    document.getElementById('detectedItemsPreview').classList.add('hidden');
+                    document.getElementById('inventoryImageInput').value = '';
+                    document.getElementById('inventoryPreview').classList.add('hidden');
+                    await loadInventory();
+                    
+                    // Update user stats
+                    currentUser.totalItems = parseInt(currentUser.totalItems) + data.items.length;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateUserUI();
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function addManualItem() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+
+            const name = document.getElementById('manualItemName').value.trim();
+            const quantity = parseInt(document.getElementById('manualItemQty').value);
+            const expiry = document.getElementById('manualItemExpiry').value;
+
+            if (!name || !quantity) {
+                alert('Please enter item name and quantity');
+                return;
+            }
+
+            try {
+                const response = await fetch('/inventory/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: currentUser.email,
+                        items: [{ name, quantity, expiryDate: expiry || null }]
+                    })
+                });
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    document.getElementById('manualItemName').value = '';
+                    document.getElementById('manualItemQty').value = '1';
+                    document.getElementById('manualItemExpiry').value = '';
+                    await loadInventory();
+                    await checkExpiringItems(); // Check for expiring items
+                    
+                    currentUser.totalItems = parseInt(currentUser.totalItems) + 1;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateUserUI();
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function loadInventory() {
+            if (!currentUser) return;
+
+            try {
+                const response = await fetch(`/inventory/${currentUser.email}`);
+                const data = await response.json();
+
+                const list = document.getElementById('inventoryList');
+                if (data.items && data.items.length > 0) {
+                    list.innerHTML = data.items.map(item => {
+                        const expiryDate = item.ExpiryDate;
+                        let expiryBadge = '';
+                        
+                        if (expiryDate) {
+                            const daysLeft = Math.ceil((new Date(expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
+                            let urgencyColor = '#4CAF50';
+                            let urgencyText = `${daysLeft} days`;
+                            
+                            if (daysLeft <= 0) {
+                                urgencyColor = '#f44336';
+                                urgencyText = 'EXPIRED';
+                            } else if (daysLeft <= 1) {
+                                urgencyColor = '#ff5722';
+                                urgencyText = `${daysLeft} day!`;
+                            } else if (daysLeft <= 3) {
+                                urgencyColor = '#ff9800';
+                                urgencyText = `${daysLeft} days`;
+                            }
+                            
+                            expiryBadge = `<span style="background: ${urgencyColor}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; margin-left: 10px;">⏰ ${urgencyText}</span>`;
+                        }
+                        
+                        return `
+                            <div class="item">
+                                <div>
+                                    <span class="item-name">${item.ItemName}</span>
+                                    <span style="color: var(--text-dim); margin-left: 10px;">x${item.Quantity}</span>
+                                    ${expiryBadge}
+                                </div>
+                                <button class="btn btn-secondary btn-small" onclick="deleteInventoryItem('${item.ItemName}')">
+                                    Delete
+                                </button>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    list.innerHTML = '<p style="color: var(--text-dim);">No items yet. Add your first item above!</p>';
+                }
+            } catch (error) {
+                console.error('Error loading inventory:', error);
+            }
+        }
+
+        async function deleteInventoryItem(itemName) {
+            if (!confirm(`Delete ${itemName}?`)) return;
+
+            try {
+                const response = await fetch('/inventory/delete', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: currentUser.email,
+                        itemName
+                    })
+                });
+
+                if (response.ok) {
+                    await loadInventory();
+                    currentUser.totalItems = parseInt(currentUser.totalItems) - 1;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateUserUI();
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // AI Features
+        async function checkExpiringItems() {
+            if (!currentUser) return;
+
+            try {
+                const response = await fetch('/ai/expiring_items', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userEmail: currentUser.email,
+                        daysThreshold: 3
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.expiringItems && data.expiringItems.length > 0) {
+                    const alertsDiv = document.getElementById('aiAlerts');
+                    const alertsList = document.getElementById('aiAlertsList');
+                    
+                    alertsList.innerHTML = data.expiringItems.map(item => `
+                        <div style="padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin-bottom: 10px;">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <strong style="color: #ff9800; font-size: 1.1em;">${item.item}</strong>
+                                    <span style="margin-left: 10px; color: var(--text-dim);">x${item.quantity}</span>
+                                    <div style="margin-top: 8px; color: var(--text-dim); font-size: 0.9em;">
+                                        ⏰ Expires in <strong style="color: ${item.urgency === 'high' ? '#f44336' : item.urgency === 'medium' ? '#ff9800' : '#4CAF50'}">${item.daysLeft} day(s)</strong>
+                                    </div>
+                                    <div style="margin-top: 5px; color: var(--text-dim); font-size: 0.9em;">
+                                         Worth: $${item.marketValue} or ${item.karmaPoints} bonus points
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-small" onclick="makeRecipeWithItem('${item.item}')" style="white-space: nowrap;">
+                                    🍳 Make a Recipe
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    alertsDiv.style.display = 'block';
+                } else {
+                    document.getElementById('aiAlerts').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error checking expiring items:', error);
+            }
+        }
+
+        async function makeRecipeWithItem(itemName) {
+            if (!currentUser) return;
+
+            // Switch to Recipe Mode
+            document.getElementById('recipeMode').click();
+            
+            // Add the expiring item to ingredients
+            if (!currentIngredients.includes(itemName)) {
+                currentIngredients.push(itemName);
+                updateIngredientsList();
+            }
+            
+            // Show a helpful message
+            alert(`✅ Added "${itemName}" to Recipe Mode!\n\nYou can now:\n• Add more ingredients from your inventory\n• Click "Generate Recipe" to get AI recipe suggestions`);
+            
+            // Scroll to recipe section
+            document.getElementById('recipeSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function analyzeTradeValue(itemName, quantity) {
+            if (!currentUser) return null;
+
+            try {
+                const response = await fetch('/ai/analyze_trade', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        neededItem: itemName,
+                        neededQuantity: quantity,
+                        userEmail: currentUser.email
+                    })
+                });
+
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error analyzing trade:', error);
+                return null;
+            }
+        }
+
+        // Search Items
+        async function searchItems() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+
+            const itemName = document.getElementById('searchInput').value.trim();
+            if (!itemName) {
+                alert('Please enter an item name');
+                return;
+            }
+
+            // Get the search pincode from the UI (either entered or current user's pincode)
+            const searchPincode = document.getElementById('currentSearchPincode').textContent || currentUser.pincode;
+
+            try {
+                // Use AI smart matching instead of basic search
+                const response = await fetch('/ai/smart_trade_match', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userEmail: currentUser.email,
+                        neededItem: itemName,
+                        neededQuantity: 1,
+                        pincode: searchPincode  // Use the selected pincode
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.matches) {
+                    // Show AI recommendation
+                    if (data.aiRecommendation) {
+                        const results = document.getElementById('searchResults');
+                        results.innerHTML = `
+                            <div style="padding: 15px; background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(33, 150, 243, 0.1) 100%); border: 2px solid rgba(76, 175, 80, 0.3); border-radius: 8px; margin-bottom: 15px;">
+                                <strong style="color: var(--primary);"> AI Analysis:</strong>
+                                <p style="margin-top: 8px; color: var(--text);">${data.aiRecommendation}</p>
+                            </div>
+                        `;
+                    }
+                    
+                    const items = data.matches.map(match => ({
+                        itemName: match.itemName,
+                        quantity: match.availableQuantity,
+                        providerEmail: match.providerEmail,
+                        providerName: match.providerName,
+                        providerPincode: match.providerPincode,  // ADD PINCODE
+                        distance: match.distance,
+                        marketValue: match.marketValue,
+                        karmaPoints: match.karmaPoints,
+                        daysUntilExpiry: match.daysUntilExpiry,
+                        expiryDate: match.expiryDate
+                    }));
+                    displaySearchResults(items, true);
+                } else {
+                    displaySearchResults([]);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function browseAll() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+
+            console.log('🔍 Browse All clicked - Showing ALL items from ALL pincodes');
+
+            try {
+                const response = await fetch('/search/all', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: currentUser.email
+                    })
+                });
+
+                const data = await response.json();
+                console.log('📦 Browse All response:', data);
+                console.log('📊 Items count:', data.items ? data.items.length : 0);
+                
+                if (data.items && data.items.length > 0) {
+                    console.log('✅ Displaying', data.items.length, 'items from all pincodes');
+                } else {
+                    console.log('❌ No items returned from server');
+                }
+                
+                displaySearchResults(data.items || [], true);
+            } catch (error) {
+                console.error('❌ Browse All error:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function displaySearchResults(items, showAIData = false) {
+            const results = document.getElementById('searchResults');
+            results.innerHTML = ''; // Clear previous results
+            
+            if (items.length === 0) {
+                results.innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: var(--text-dim);">
+                        <p style="font-size: 1.1em; margin-bottom: 10px;">📭 No items found in your area</p>
+                        <p style="font-size: 0.9em;">Try searching for a specific item or check back later!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Get user's active trades to check if they already requested these items
+            let activeTrades = [];
+            try {
+                const tradesResponse = await fetch(`/trade/user/${currentUser.email}`);
+                const tradesData = await tradesResponse.json();
+                // Only check requested trades (one-way trade requests)
+                activeTrades = [...(tradesData.requested || [])].filter(t => 
+                    t.Status === 'pending' || t.Status === 'receiver_offered' || t.Status === 'accepted'
+                );
+            } catch (error) {
+                console.error('Error fetching trades:', error);
+            }
+
+            // Helper function to escape strings for JavaScript in onclick attributes
+            const escapeJs = (str) => {
+                if (!str) return '';
+                return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+            };
+
+            // Helper function to check if user has active trade for this item
+            const hasActiveTrade = (providerEmail, itemName) => {
+                return activeTrades.some(t => 
+                    t.ProviderEmail === providerEmail && t.ItemName === itemName
+                );
+            };
+
+            const itemsHTML = items.map(item => {
+                let aiInfo = '';
+                // Show market value if available (from AI search or browse all)
+                if (item.marketValue) {
+                    let expiryBadge = '';
+                    if (item.expiryDate && item.daysUntilExpiry !== undefined) {
+                        const urgencyColor = item.daysUntilExpiry <= 1 ? '#f44336' : item.daysUntilExpiry <= 3 ? '#ff9800' : '#4CAF50';
+                        expiryBadge = `<span style="background: ${urgencyColor}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; margin-left: 10px;">⏰ ${item.daysUntilExpiry} days</span>`;
+                    }
+                    
+                    aiInfo = `
+                        <div style="margin-top: 8px; padding: 8px; background: rgba(76, 175, 80, 0.1); border-radius: 4px; font-size: 0.9em;">
+                            <div style="color: var(--primary);">💰 Value: $${item.marketValue} = ${item.karmaPoints} bonus points</div>
+                            ${expiryBadge}
+                        </div>
+                    `;
+                }
+                
+                const tradeExists = hasActiveTrade(item.providerEmail, item.itemName);
+                
+                return `
+                    <div class="item">
+                        <div style="flex: 1;">
+                            <span class="item-name">${item.itemName}</span>
+                            <span style="color: var(--text-dim); margin-left: 10px;">x${item.quantity}</span>
+                            <div style="font-size: 0.85em; color: var(--text-dim); margin-top: 5px;">
+                                From: ${item.providerName} ${item.providerPincode ? `<span style="background: rgba(33, 150, 243, 0.2); padding: 2px 6px; border-radius: 4px; margin-left: 5px;"> ${item.providerPincode}${item.distance !== undefined && item.distance > 0 ? ` (+${item.distance})` : ''}</span>` : ''}
+                            </div>
+                            ${aiInfo}
+                        </div>
+                        ${tradeExists ? `
+                            <span style="padding: 8px 16px; background: rgba(255, 193, 7, 0.2); color: #FFC107; border-radius: 6px; font-size: 0.9em; white-space: nowrap;">
+                                ⏳ Trade Pending
+                            </span>
+                        ` : `
+                            <button class="btn btn-primary btn-small" onclick="openTradeModal('${escapeJs(item.providerEmail)}', '${escapeJs(item.providerName)}', '${escapeJs(item.itemName)}', ${item.quantity}, ${item.marketValue || 0}, ${item.karmaPoints || 0})">
+                                Request Trade
+                            </button>
+                        `}
+                    </div>
+                `;
+            }).join('');
+            
+            results.innerHTML = itemsHTML;
+        }
+
+        // Trade Management
+        async function openTradeModal(providerEmail, providerName, itemName, maxQty, unitMarketValue = 0, unitKarmaPoints = 0) {
+            // Store unit values for recalculation when quantity changes
+            tradeRequestData = { 
+                providerEmail, 
+                providerName, 
+                itemName, 
+                maxQty, 
+                unitMarketValue,  // Store unit value
+                unitKarmaPoints   // Store unit karma
+            };
+            selectedTradeItems = [];
+            
+            document.getElementById('tradeItemName').textContent = itemName;
+            document.getElementById('tradeProviderName').textContent = providerName;
+            document.getElementById('tradeQuantity').value = '1';
+            document.getElementById('tradeQuantity').max = maxQty;
+            
+            // Calculate initial values for quantity 1
+            const marketValue = unitMarketValue * 1;
+            
+            // Update market value display
+            document.getElementById('tradeMarketValue').textContent = marketValue.toFixed(2);
+            
+            // Load user's items for mutual trade
+            await loadUserItemsForTrade(marketValue);
+            
+            document.getElementById('suggestedLocation').textContent = `Community Center, Pincode ${currentUser.pincode}`;
+            document.getElementById('suggestedTime').textContent = 'Saturday, 10:00 AM - 12:00 PM';
+            
+            document.getElementById('customLocation').value = '';
+            document.getElementById('customTime').value = '';
+            document.getElementById('customReason').value = '';
+            const userIdField = document.getElementById('userIdentifier');
+            if (userIdField) userIdField.value = '';
+            
+            // Clear message field
+            const messageField = document.getElementById('tradeMessage');
+            if (messageField) messageField.value = '';
+            
+            // Add event listener to quantity input to update values
+            const qtyInput = document.getElementById('tradeQuantity');
+            qtyInput.removeEventListener('input', updateTradeQuantity); // Remove old listener
+            qtyInput.addEventListener('input', updateTradeQuantity);
+            
+            document.getElementById('tradeModal').classList.add('active');
+        }
+        
+        async function updateTradeQuantity() {
+            const quantity = parseInt(document.getElementById('tradeQuantity').value) || 1;
+            const marketValue = tradeRequestData.unitMarketValue * quantity;
+            
+            // Update display
+            document.getElementById('tradeMarketValue').textContent = marketValue.toFixed(2);
+            
+            // Reload mutual trade items with new target value
+            await loadUserItemsForTrade(marketValue);
+        }
+
+        function closeTradeModal() {
+            document.getElementById('tradeModal').classList.remove('active');
+        }
+
+        // Mutual Trade System Functions
+        let selectedTradeItems = [];
+        
+        async function loadUserItemsForTrade(targetValue) {
+            const container = document.getElementById('suggestedTradeItems');
+            if (!container) return;
+            
+            container.innerHTML = '<p style="color: #888;">Loading...</p>';
+            
+            try {
+                const response = await fetch('/inventory/list', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: currentUser.email })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.items && data.items.length > 0) {
+                    container.innerHTML = '';
+                    
+                    data.items.forEach(item => {
+                        // Use server-provided MarketValue instead of calculating
+                        const itemValue = parseFloat(item.MarketValue || 0);
+                        const isGoodMatch = Math.abs(itemValue - targetValue) < targetValue * 0.3;
+                        
+                        const itemDiv = document.createElement('div');
+                        itemDiv.style.cssText = `padding: 10px; margin: 5px 0; background: var(--card-bg); border: 2px solid ${isGoodMatch ? '#4CAF50' : '#888'}; border-radius: 8px; cursor: pointer;`;
+                        itemDiv.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong>${item.ItemName}</strong> x${item.Quantity}
+                                    <div style="font-size: 0.85em; color: var(--text-dim);">
+                                        Value: $${itemValue.toFixed(2)} ${isGoodMatch ? '✓ Good match' : ''}
+                                    </div>
+                                </div>
+                                <input type="checkbox" onchange="toggleTradeItem('${item.ItemName}', ${item.Quantity}, ${itemValue})" style="width: 20px; height: 20px;">
+                            </div>
+                        `;
+                        container.appendChild(itemDiv);
+                    });
+                    
+                    // Add initial summary section
+                    const summaryDiv = document.createElement('div');
+                    summaryDiv.className = 'trade-summary';
+                    summaryDiv.style.cssText = 'margin-top: 15px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-radius: 8px; text-align: center; border: 2px dashed rgba(76, 175, 80, 0.3);';
+                    summaryDiv.innerHTML = `
+                        <div style="font-size: 0.9em; color: var(--text-dim); margin-bottom: 5px;">Target Value: $${targetValue.toFixed(2)}</div>
+                        <div style="font-size: 1.1em; font-weight: 600; color: var(--primary);">Selected Total: $0.00</div>
+                        <div style="font-size: 0.85em; color: var(--text-dim); margin-top: 5px;">Select items to match the target value</div>
+                    `;
+                    container.appendChild(summaryDiv);
+                } else {
+                    container.innerHTML = '<p style="color: #888;">No items in your inventory. Add items first!</p>';
+                }
+            } catch (error) {
+                console.error('Error loading items:', error);
+                container.innerHTML = '<p style="color: #f44336;">Error loading items</p>';
+            }
+        }
+        
+        function toggleTradeItem(itemName, quantity, value) {
+            const index = selectedTradeItems.findIndex(i => i.itemName === itemName);
+            if (index > -1) {
+                selectedTradeItems.splice(index, 1);
+            } else {
+                selectedTradeItems.push({ itemName: itemName, quantity: quantity, value: value });
+            }
+            updateTradeValue();
+        }
+        
+        function updateTradeValue() {
+            const marketValueEl = document.getElementById('tradeMarketValue');
+            if (!marketValueEl) return;
+            
+            const totalValue = selectedTradeItems.reduce((sum, item) => sum + item.value, 0);
+            const targetValue = parseFloat(marketValueEl.textContent);
+            
+            const container = document.getElementById('suggestedTradeItems');
+            if (!container) return;
+            
+            const summary = container.querySelector('.trade-summary');
+            if (summary) summary.remove();
+            
+            if (selectedTradeItems.length > 0) {
+                const summaryDiv = document.createElement('div');
+                summaryDiv.className = 'trade-summary';
+                summaryDiv.style.cssText = 'margin-top: 10px; padding: 10px; background: rgba(76, 175, 80, 0.2); border-radius: 8px;';
+                summaryDiv.innerHTML = `
+                    <strong>Selected Total: $${totalValue.toFixed(2)}</strong>
+                    <div style="font-size: 0.85em; margin-top: 5px;">
+                        ${totalValue >= targetValue * 0.9 && totalValue <= targetValue * 1.1 ? '✓ Fair trade!' : `Target: $${targetValue.toFixed(2)}`}
+                    </div>
+                `;
+                container.appendChild(summaryDiv);
+            } else {
+                // Show initial summary when no items selected
+                const summaryDiv = document.createElement('div');
+                summaryDiv.className = 'trade-summary';
+                summaryDiv.style.cssText = 'margin-top: 15px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-radius: 8px; text-align: center; border: 2px dashed rgba(76, 175, 80, 0.3);';
+                summaryDiv.innerHTML = `
+                    <div style="font-size: 0.9em; color: var(--text-dim); margin-bottom: 5px;">Target Value: $${targetValue.toFixed(2)}</div>
+                    <div style="font-size: 1.1em; font-weight: 600; color: var(--primary);">Selected Total: $0.00</div>
+                    <div style="font-size: 0.85em; color: var(--text-dim); margin-top: 5px;">Select items to match the target value</div>
+                `;
+                container.appendChild(summaryDiv);
+            }
+        }
+        
+        // Removed updateTradeType() - now only using Item Exchange
+        
+        function getMarketPrice(itemName) {
+            const prices = {
+                'Chicken': 5, 'Beef': 8, 'Pork': 6, 'Fish': 7,
+                'Milk': 3, 'Cheese': 4, 'Yogurt': 2, 'Egg': 0.3, 'Eggs': 0.3, 'Butter': 4,
+                'Tomato': 0.5, 'Tomatoes': 0.5, 'Lettuce': 2, 'Carrot': 0.3, 'Carrots': 0.3,
+                'Apple': 0.5, 'Apples': 0.5, 'Banana': 0.3, 'Bananas': 0.3, 'Orange': 0.6, 'Oranges': 0.6,
+                'Rice': 2, 'Bread': 3, 'Pasta': 2
+            };
+            return prices[itemName] || 1;
+        }
+
+        async function submitTrade() {
+            const quantity = parseInt(document.getElementById('tradeQuantity').value);
+            const identifier = document.getElementById('userIdentifier').value.trim();
+            const customLocation = document.getElementById('customLocation').value.trim();
+            const customTime = document.getElementById('customTime').value.trim();
+            const message = document.getElementById('tradeMessage').value.trim();
+
+            if (!quantity || quantity < 1 || quantity > tradeRequestData.maxQty) {
+                alert(`Please enter a valid quantity (1-${tradeRequestData.maxQty})`);
+                return;
+            }
+            
+            if (!identifier) {
+                alert('Please tell us how the other person can recognize you (e.g., "Wearing red jacket")');
+                return;
+            }
+            
+            // Check if user selected items to offer
+            if (selectedTradeItems.length === 0) {
+                alert('Please select at least one item to offer in exchange');
+                return;
+            }
+
+            const location = customLocation || `Community Center, Pincode ${currentUser.pincode}`;
+            const time = customTime || 'Saturday, 10:00 AM - 12:00 PM';
+
+            try {
+                const response = await fetch('/trade/request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        requesterEmail: currentUser.email,
+                        providerEmail: tradeRequestData.providerEmail,
+                        itemName: tradeRequestData.itemName,
+                        quantity,
+                        offeredItems: selectedTradeItems, // Send all selected items
+                        message
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.status !== 200) {
+                    alert(`Error: ${data.message || 'Failed to send trade request'}`);
+                    console.error('Trade request error:', data);
+                    return;
+                }
+                
+                if (data.status === 'success') {
+                    // Set identifier
+                    await fetch('/trade/set_identifier', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            tradeId: data.tradeId,
+                            email: currentUser.email,
+                            identifier: identifier
+                        })
+                    });
+                    
+                    // Update location/time if custom
+                    if (customLocation || customTime) {
+                        await fetch('/trade/schedule', {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                tradeId: data.tradeId,
+                                location,
+                                time
+                            })
+                        });
+                    }
+
+                    alert('Trade request sent successfully!');
+                    closeTradeModal();
+                    await loadTrades();
+                    await checkExpiringItems(); // Refresh AI alerts after trade
+                } else {
+                    alert(`Error: ${data.message || 'Trade request failed'}`);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+                console.error('Trade request exception:', error);
+            }
+        }
+
+        async function loadTrades() {
+            if (!currentUser) return;
+
+            try {
+                const response = await fetch(`/trade/user/${currentUser.email}`);
+                const data = await response.json();
+                
+                // DEBUG: Log all trades to console
+                console.log('📊 Loading trades for:', currentUser.email);
+                console.log('📦 Total trades:', (data.requested || []).length + (data.received || []).length);
+
+                const list = document.getElementById('tradesList');
+                const allTrades = [...(data.requested || []), ...(data.received || [])]
+                    .sort((a, b) => new Date(b.CreatedAt || 0) - new Date(a.CreatedAt || 0));
+
+                if (allTrades.length === 0) {
+                    list.innerHTML = '<p style="color: var(--text-dim);">No trades yet.</p>';
+                    return;
+                }
+
+                list.innerHTML = allTrades.map(trade => {
+                    const isRequester = trade.RequesterEmail === currentUser.email;
+                    const isProvider = trade.ProviderEmail === currentUser.email;
+                    const otherPerson = isRequester ? trade.ProviderName : trade.RequesterName;
+                    const otherPincode = isRequester ? trade.ProviderPincode : trade.RequesterPincode;
+                    const otherIdentifier = isRequester ? trade.ProviderIdentifier : trade.RequesterIdentifier;
+                    const myIdentifier = isRequester ? trade.RequesterIdentifier : trade.ProviderIdentifier;
+                    const direction = isRequester ? 'from' : 'to';
+
+                    return `
+                        <div class="trade-card ${trade.Status === 'cancelled' || trade.Status === 'rejected' ? 'trade-card-small' : ''}">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                <div>
+                                    <div style="font-weight: 600; font-size: 1.1em;">${trade.ItemName} (x${trade.Quantity})</div>
+                                    <div style="color: var(--text-dim); font-size: 0.9em; margin-top: 5px;">
+                                        ${direction} ${otherPerson}${otherPincode ? ` <span style="background: rgba(33, 150, 243, 0.2); padding: 2px 6px; border-radius: 4px; margin-left: 5px;">📍 ${otherPincode}</span>` : ''}
+                                    </div>
+                                    ${trade.MarketValue ? `<div style="margin-top: 8px; padding: 6px 12px; background: rgba(76, 175, 80, 0.2); border-radius: 6px; display: inline-block;">
+                                        <strong style="color: var(--primary); font-size: 1.05em;">💰 Value: $${parseFloat(trade.MarketValue).toFixed(2)}</strong>
+                                    </div>` : ''}
+                                </div>
+                                <span class="status status-${trade.Status}">${trade.Status.toUpperCase().replace('_', ' ')}</span>
+                            </div>
+                            
+                            ${trade.OfferItem ? `
+                                <div style="margin-bottom: 15px; padding: 12px; background: rgba(33, 150, 243, 0.1); border-radius: 8px;">
+                                    <div style="font-weight: 600; color: #2196F3; margin-bottom: 5px;">💱 Offered in Exchange:</div>
+                                    <div style="font-size: 0.9em;">${trade.OfferItem} (x${trade.OfferQuantity}) - $${trade.OfferValue || 0}</div>
+                                </div>
+                            ` : ''}
+                            
+                            ${trade.Message ? `
+                                <div style="margin-bottom: 15px; padding: 12px; background: rgba(255, 152, 0, 0.1); border-radius: 8px;">
+                                    <div style="font-weight: 600; color: #FF9800; margin-bottom: 5px;">💬 Message:</div>
+                                    <div style="font-size: 0.9em;">${trade.Message}</div>
+                                </div>
+                            ` : ''}
+                            
+                            ${trade.ReceiverOfferedItems && trade.ReceiverOfferedItems !== '' ? `
+                                <div style="margin-bottom: 15px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-radius: 8px;">
+                                    <div style="font-weight: 600; color: #4CAF50; margin-bottom: 8px;">🛒 ${isProvider ? 'Receiver' : 'Your'} Offered Items:</div>
+                                    ${JSON.parse(trade.ReceiverOfferedItems).map(item => `
+                                        <div style="font-size: 0.9em; margin-bottom: 5px;">
+                                            • ${item.itemName} (x${item.quantity}) - $${item.value}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                            
+                            
+                            ${trade.CounterOffer && trade.CounterOffer !== '' ? `
+                                <div style="margin-bottom: 15px; padding: 12px; background: rgba(156, 39, 176, 0.1); border-radius: 8px; border-left: 3px solid #9C27B0;">
+                                    <div style="font-weight: 600; color: #9C27B0; margin-bottom: 8px;">💬 ${isProvider ? 'Your' : 'Provider\'s'} Negotiation Message:</div>
+                                    <div style="font-size: 0.9em; font-style: italic; color: var(--text);">"${trade.CounterOffer}"</div>
+                                </div>
+                            ` : ''}
+                            
+                            ${isRequester && trade.CounterOffer && trade.CounterOffer !== '' && trade.Status === 'receiver_offered' ? `
+                                <div style="margin-top: 15px; padding: 15px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 2px solid rgba(255, 193, 7, 0.3);">
+                                    <h4 style="margin: 0 0 10px; color: #FFC107;">🔄 Update Your Offer</h4>
+                                    <p style="font-size: 0.9em; color: var(--text-dim); margin-bottom: 10px;">
+                                        The provider wants different items. Select new items to offer:
+                                    </p>
+                                    <div id="receiver-items-update-${trade.TradeID}" style="max-height: 200px; overflow-y: auto; margin-bottom: 10px;">
+                                        <p style="color: #888;">Click "Load My Items" to see your inventory</p>
+                                    </div>
+                                    <button class="btn btn-primary btn-small" onclick="loadReceiverItemsForUpdate('${trade.TradeID}', ${trade.MarketValue})" style="width: 100%; margin-bottom: 10px;">
+                                        📦 Load My Items
+                                    </button>
+                                    <button class="btn btn-primary btn-small" onclick="submitUpdatedOffer('${trade.TradeID}')" style="width: 100%;">
+                                        ✅ Submit New Offer
+                                    </button>
+                                </div>
+                            ` : ''}
+                            
+                            ${trade.ProviderSelectedItem ? `
+                                <div style="margin-bottom: 15px; padding: 12px; background: rgba(156, 39, 176, 0.1); border-radius: 8px;">
+                                    <div style="font-weight: 600; color: #9C27B0; margin-bottom: 5px;">✅ Provider Selected:</div>
+                                    <div style="font-size: 0.9em;">${trade.ProviderSelectedItem} (x${trade.ProviderSelectedQuantity})</div>
+                                </div>
+                            ` : ''}
+                            
+
+                            
+                            <div style="color: var(--text-dim); font-size: 0.9em;">
+                                 ${trade.MeetupLocation}<br>
+                                ⏰ ${trade.MeetupTime}
+                            </div>
+                            ${(trade.Status === 'accepted' || trade.Status === 'completed') && (otherIdentifier || myIdentifier) ? `
+                                <div style="margin-top: 15px; padding: 12px; background: rgba(76, 175, 80, 0.1); border-radius: 8px; border-left: 3px solid var(--primary);">
+                                    <div style="font-weight: 600; color: var(--primary); margin-bottom: 8px;"> Meetup Identifiers:</div>
+                                    ${myIdentifier ? `<div style="font-size: 0.9em; margin-bottom: 5px;">You: ${myIdentifier}</div>` : ''}
+                                    ${otherIdentifier ? `<div style="font-size: 0.9em;">${otherPerson}: ${otherIdentifier}</div>` : `<div style="font-size: 0.85em; color: var(--text-dim);">${otherPerson} hasn't set their identifier yet</div>`}
+                                </div>
+                            ` : ''}
+                            ${!myIdentifier && (trade.Status === 'accepted' || trade.Status === 'pending') ? `
+                                <div style="margin-top: 15px;">
+                                    <input type="text" id="identifier-${trade.TradeID}" placeholder="How will they recognize you? (e.g., 'Red jacket')" style="margin: 0;">
+                                    <button class="btn btn-primary btn-small" onclick="setMyIdentifier('${trade.TradeID}')" style="margin-top: 10px; width: 100%;">
+                                        Set My Identifier
+                                    </button>
+                                </div>
+                            ` : ''}
+                            
+                            ${isRequester && trade.Status === 'pending' ? `
+                                <div style="margin-top: 15px; padding: 15px; background: rgba(255, 193, 7, 0.1); border-radius: 8px;">
+                                    <h4 style="margin: 0 0 10px; color: #FFC107;">🛒 Select Items to Offer</h4>
+                                    <p style="font-size: 0.9em; color: var(--text-dim); margin-bottom: 10px;">
+                                        ⚠️ You MUST select items worth $${trade.MarketValue}
+                                    </p>
+                                    <div id="receiver-items-${trade.TradeID}" style="max-height: 200px; overflow-y: auto; margin-bottom: 10px;">
+                                        <p style="color: #888;">Loading your items...</p>
+                                    </div>
+                                    <button class="btn btn-primary btn-small" onclick="loadReceiverItems('${trade.TradeID}', ${trade.MarketValue})" style="width: 100%; margin-bottom: 10px;">
+                                        Load My Items
+                                    </button>
+                                    <button class="btn btn-primary btn-small" onclick="submitReceiverOffer('${trade.TradeID}')" style="width: 100%;">
+                                        ✅ Submit My Items
+                                    </button>
+                                </div>
+                            ` : ''}
+                            
+                            ${!isRequester && trade.Status === 'pending' ? `
+                                <div style="margin-top: 15px; padding: 15px; background: rgba(33, 150, 243, 0.1); border-radius: 8px;">
+                                    <p style="font-size: 0.9em; color: var(--text-dim);">
+                                        ⏳ Waiting for receiver to offer items...
+                                    </p>
+                                </div>
+                            ` : ''}
+                            
+                            ${isProvider && trade.Status === 'receiver_offered' ? `
+                                <div style="margin-top: 15px; padding: 15px; background: rgba(76, 175, 80, 0.1); border-radius: 8px;">
+                                    <h4 style="margin: 0 0 10px; color: #4CAF50;">✅ Review Receiver's Offer</h4>
+                                    <p style="font-size: 0.9em; color: var(--text-dim); margin-bottom: 10px;">
+                                        The receiver has offered items in exchange for your ${trade.ItemName}
+                                    </p>
+                                    <button class="btn btn-primary btn-small" onclick="acceptTradeDirectly('${trade.TradeID}')" style="width: 100%; margin-bottom: 10px;">
+                                        ✅ Accept This Trade
+                                    </button>
+                                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(76, 175, 80, 0.3);">
+                                        <p style="font-size: 0.9em; color: var(--text-dim); margin-bottom: 8px;">💬 Want different items? Send a negotiation message:</p>
+                                        <textarea id="negotiate-msg-${trade.TradeID}" placeholder="E.g., 'Can you offer tomatoes instead of onions?'" style="width: 100%; min-height: 60px; padding: 8px; border-radius: 6px; border: 1px solid #ddd; resize: vertical; margin-bottom: 8px;"></textarea>
+                                        <button class="btn btn-secondary btn-small" onclick="sendNegotiationMessage('${trade.TradeID}')" style="width: 100%;">
+                                            📤 Send Message
+                                        </button>
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${!isProvider && trade.Status === 'receiver_offered' ? `
+                                <div style="margin-top: 15px; padding: 15px; background: rgba(33, 150, 243, 0.1); border-radius: 8px;">
+                                    <p style="font-size: 0.9em; color: var(--text-dim);">
+                                        ⏳ Waiting for provider to review your offer...
+                                    </p>
+                                </div>
+                            ` : ''}
+                            
+                            ${trade.Status === 'accepted' ? `
+                                <button class="btn btn-primary btn-small" onclick="updateTradeStatus('${trade.TradeID}', 'completed')" style="margin-top: 15px;">
+                                    ✅ Mark as Completed
+                                </button>
+                            ` : ''}
+                            ${(trade.Status === 'pending' || trade.Status === 'counter_offered' || trade.Status === 'receiver_offered') ? `
+                                <button class="btn btn-secondary btn-small" onclick="cancelTrade('${trade.TradeID}')" style="margin-top: 10px; width: 100%;">
+                                    🚫 Cancel Trade
+                                </button>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading trades:', error);
+            }
+        }
+
+        async function updateTradeStatus(tradeId, status) {
+            try {
+                const response = await fetch('/trade/update', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tradeId, status })
+                });
+
+                if (response.ok) {
+                    await loadTrades();
+                    if (status === 'completed') {
+                        alert('Trade completed! You earned 50 bonus points! 🎉');
+                        const userResponse = await fetch(`/user/${currentUser.email}`);
+                        const userData = await userResponse.json();
+                        if (userData.status === 'success') {
+                            currentUser = userData.user;
+                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                            updateUserUI();
+                        }
+                    }
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        async function setMyIdentifier(tradeId) {
+            const identifier = document.getElementById(`identifier-${tradeId}`).value.trim();
+            
+            if (!identifier) {
+                alert('Please enter how the other person can recognize you');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/trade/set_identifier', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tradeId,
+                        email: currentUser.email,
+                        identifier
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('Identifier set! The other person will see this.');
+                    await loadTrades();
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        async function acceptTrade(tradeId) {
+            if (!confirm('Accept this trade?')) return;
+            
+            try {
+                const response = await fetch('/trade/accept', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tradeId })
+                });
+                
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert('Trade accepted! Set your identifier so the other person can recognize you.');
+                    await loadTrades();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        async function rejectTrade(tradeId) {
+            const message = prompt('Reason for rejection (optional):');
+            if (message === null) return; // User cancelled
+            
+            try {
+                const response = await fetch('/trade/reject', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tradeId, message })
+                });
+                
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert('Trade rejected.');
+                    await loadTrades();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        async function cancelTrade(tradeId) {
+            const message = prompt('Reason for cancellation (optional):');
+            if (message === null) return; // User cancelled
+            
+            try {
+                const response = await fetch('/trade/cancel', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tradeId, message })
+                });
+                
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert('Trade cancelled. The other person will be notified.');
+                    await loadTrades();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        // Accept trade directly (all offered items)
+        async function acceptTradeDirectly(tradeId) {
+            if (!confirm('Accept this trade with all offered items?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/trade/accept_direct', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tradeId })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    alert('Trade accepted! You earned bonus points! 🎉');
+                    await loadTrades();
+                    await checkExpiringItems();
+                } else {
+                    alert('Error: ' + (data.message || 'Failed to accept trade'));
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Send negotiation message
+        async function sendNegotiationMessage(tradeId) {
+            const message = document.getElementById(`negotiate-msg-${tradeId}`).value.trim();
+            
+            if (!message) {
+                alert('Please enter a message');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/trade/negotiate', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tradeId,
+                        message,
+                        senderEmail: currentUser.email
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    alert('Message sent! The other party will see your negotiation request.');
+                    document.getElementById(`negotiate-msg-${tradeId}`).value = '';
+                    await loadTrades();
+                } else {
+                    alert('Error: ' + (data.message || 'Failed to send message'));
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        let receiverSelectedItems = {};
+        
+        async function loadReceiverItems(tradeId, targetValue) {
+            try {
+                const response = await fetch(`/inventory/list/${currentUser.email}`);
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.items) {
+                    const container = document.getElementById(`receiver-items-${tradeId}`);
+                    receiverSelectedItems[tradeId] = [];
+                    
+                    container.innerHTML = data.items.map(item => `
+                        <label style="display: block; padding: 10px; background: var(--card-bg); border: 2px solid #ddd; border-radius: 8px; margin-bottom: 10px; cursor: pointer;">
+                            <input type="checkbox" class="receiver-item-checkbox" data-trade="${tradeId}" data-item="${item.ItemName}" data-quantity="${item.Quantity}" data-value="${item.MarketValue || 0}" onchange="updateReceiverSelection('${tradeId}')" style="margin-right: 10px;">
+                            <strong>${item.ItemName}</strong> (x${item.Quantity}) - $${item.MarketValue || 0}
+                        </label>
+                    `).join('');
+                    
+                    container.innerHTML += `<p style="font-size: 0.85em; color: var(--text-dim); margin-top: 10px;">Target value: $${targetValue}</p>`;
+                } else {
+                    alert('No items in your inventory');
+                }
+            } catch (error) {
+                alert('Error loading items: ' + error.message);
+            }
+        }
+        
+        function updateReceiverSelection(tradeId) {
+            const checkboxes = document.querySelectorAll(`.receiver-item-checkbox[data-trade="${tradeId}"]:checked`);
+            receiverSelectedItems[tradeId] = Array.from(checkboxes).map(cb => ({
+                itemName: cb.dataset.item,
+                quantity: parseInt(cb.dataset.quantity),
+                value: parseFloat(cb.dataset.value)
+            }));
+        }
+        
+        async function submitReceiverOffer(tradeId) {
+            if (!receiverSelectedItems[tradeId] || receiverSelectedItems[tradeId].length === 0) {
+                alert('Please select at least one item to offer');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/trade/receiver_offer_items', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tradeId,
+                        offeredItems: receiverSelectedItems[tradeId]
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert('Your offer has been sent! The provider will review your items.');
+                    await loadTrades();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+        
+        async function submitProviderSelection(tradeId) {
+            const selected = document.querySelector(`input[name="provider-select-${tradeId}"]:checked`);
+            
+            if (!selected) {
+                alert('Please select an item from the receiver\'s offer');
+                return;
+            }
+            
+            const selectedItem = selected.value;
+            const selectedQuantity = parseInt(selected.dataset.quantity);
+            
+            try {
+                const response = await fetch('/trade/provider_select_item', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tradeId,
+                        selectedItem,
+                        selectedQuantity
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.status === 'success') {
+                    alert('Trade accepted! Set your identifier so the receiver can recognize you.');
+                    await loadTrades();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Chatbot - Intelligent Assistant with Dashboard Control
+        function toggleChatbot() {
+            document.getElementById('chatbotWindow').classList.toggle('active');
+        }
+
+        async function sendChat() {
+            const input = document.getElementById('chatInput');
+            const question = input.value.trim();
+            if (!question) return;
+
+            const messages = document.getElementById('chatMessages');
+            messages.innerHTML += `
+                <div class="chat-message" style="background: rgba(33, 150, 243, 0.1); border-left-color: #2196F3;">
+                    <strong>You:</strong> ${question}
+                </div>
+            `;
+
+            input.value = '';
+            messages.scrollTop = messages.scrollHeight;
+
+            try {
+                // Use AI chatbot endpoint with database access
+                const response = await fetch('/chatbot_ai', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        question,
+                        currentIngredients: currentIngredients,
+                        userEmail: currentUser ? currentUser.email : '',
+                        context: {
+                            hasRecipe: document.getElementById('recipeSection').classList.contains('hidden') === false,
+                            mode: document.getElementById('recipeMode').classList.contains('active') ? 'recipe' : 'sharing',
+                            isLoggedIn: currentUser !== null
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                
+                // Display AI response (only if no action will handle it)
+                if (data.status === 'success' && !data.action) {
+                    messages.innerHTML += `
+                        <div class="chat-message">
+                            <strong>Assistant:</strong> ${data.response.replace(/\n/g, '<br>')}
+                        </div>
+                    `;
+                } else if (data.status !== 'success') {
+                    messages.innerHTML += `
+                        <div class="chat-message" style="background: rgba(244, 67, 54, 0.1); border-left-color: #f44336;">
+                            <strong>Assistant:</strong> Sorry, I encountered an error. Please try again.
+                        </div>
+                    `;
+                }
+                
+                messages.scrollTop = messages.scrollHeight;
+                
+                // Handle different chatbot actions (legacy support)
+                if (data.action) {
+                    switch(data.action) {
+                        case 'regenerate_recipe':
+                            // Update ingredients and regenerate
+                            currentIngredients = data.ingredients;
+                            displayIngredients();
+                            await generateRecipe();
+                            break;
+                            
+                        case 'remove_ingredients':
+                            // Remove specific ingredients
+                            currentIngredients = data.ingredients;
+                            displayIngredients();
+                            if (data.regenerate) {
+                                await generateRecipe();
+                            }
+                            break;
+                            
+                        case 'add_ingredients':
+                            // Add specific ingredients
+                            currentIngredients = data.ingredients;
+                            displayIngredients();
+                            if (data.regenerate) {
+                                await generateRecipe();
+                            }
+                            break;
+                            
+                        case 'switch_mode':
+                            // Switch between recipe and sharing mode
+                            switchMode(data.mode);
+                            messages.innerHTML += `
+                                <div class="chat-message">
+                                    <strong>Assistant:</strong> ${data.response}
+                                </div>
+                            `;
+                            break;
+                            
+                        case 'search_items':
+                            // Perform search
+                            document.getElementById('searchInput').value = data.searchTerm;
+                            await searchItems();
+                            messages.innerHTML += `
+                                <div class="chat-message">
+                                    <strong>Assistant:</strong> ${data.response}
+                                </div>
+                            `;
+                            break;
+                            
+                        case 'show_inventory':
+                            // Switch to sharing mode and show inventory
+                            switchMode('sharing');
+                            await loadInventory();
+                            messages.innerHTML += `
+                                <div class="chat-message">
+                                    <strong>Assistant:</strong> ${data.response}
+                                </div>
+                            `;
+                            break;
+                            
+                        default:
+                            // For actions that don't show their own message, show the response
+                            messages.innerHTML += `
+                                <div class="chat-message">
+                                    <strong>Assistant:</strong> ${data.response}
+                                </div>
+                            `;
+                            break;
+                    }
+                }
+                
+                messages.scrollTop = messages.scrollHeight;
+            } catch (error) {
+                messages.innerHTML += `
+                    <div class="chat-message">
+                        <strong>Assistant:</strong> I'm here to help! I can modify recipes, add/remove ingredients, search for items, and control the dashboard. Just tell me what you need!
+                    </div>
+                `;
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+        
+        // Load items for updating offer after negotiation
+        async function loadReceiverItemsForUpdate(tradeId, targetValue) {
+            try {
+                const response = await fetch(`/inventory/list/${currentUser.email}`);
+                const data = await response.json();
+                
+                if (data.status === 'success' && data.items) {
+                    const container = document.getElementById(`receiver-items-update-${tradeId}`);
+                    if (!window.receiverSelectedItems) window.receiverSelectedItems = {};
+                    window.receiverSelectedItems[tradeId] = [];
+                    
+                    container.innerHTML = data.items.map(item => `
+                        <label style="display: block; padding: 10px; background: rgba(255, 255, 255, 0.05); border: 2px solid #ddd; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='#4CAF50'" onmouseout="this.style.borderColor='#ddd'">
+                            <input type="checkbox" class="receiver-item-update-checkbox" data-trade="${tradeId}" data-item="${item.ItemName}" data-quantity="${item.Quantity}" data-value="${item.MarketValue || 0}" onchange="updateReceiverSelectionForUpdate('${tradeId}')" style="margin-right: 10px; cursor: pointer;">
+                            <strong style="color: var(--primary);">${item.ItemName}</strong> <span style="color: var(--text-dim);">(x${item.Quantity})</span> - <span style="color: #4CAF50;">$${parseFloat(item.MarketValue || 0).toFixed(2)}</span>
+                        </label>
+                    `).join('');
+                    
+                    container.innerHTML += `<div style="margin-top: 10px; padding: 10px; background: rgba(76, 175, 80, 0.1); border-radius: 6px; text-align: center;">
+                        <p style="font-size: 0.9em; color: var(--text-dim); margin: 0;">🎯 Target value: <strong style="color: var(--primary);">$${targetValue.toFixed(2)}</strong></p>
+                    </div>`;
+                } else {
+                    alert('No items in your inventory. Please add items first.');
+                }
+            } catch (error) {
+                console.error('Error loading items:', error);
+                alert('Error loading items: ' + error.message);
+            }
+        }
+
+        // Update selection when checkboxes change
+        function updateReceiverSelectionForUpdate(tradeId) {
+            const checkboxes = document.querySelectorAll(`.receiver-item-update-checkbox[data-trade="${tradeId}"]:checked`);
+            if (!window.receiverSelectedItems) window.receiverSelectedItems = {};
+            window.receiverSelectedItems[tradeId] = Array.from(checkboxes).map(cb => ({
+                itemName: cb.dataset.item,
+                quantity: parseInt(cb.dataset.quantity),
+                value: parseFloat(cb.dataset.value)
+            }));
+            
+            const total = window.receiverSelectedItems[tradeId].reduce((sum, item) => sum + item.value, 0);
+            console.log(`Selected ${window.receiverSelectedItems[tradeId].length} items, total value: $${total.toFixed(2)}`);
+        }
+
+        // Submit updated offer to provider
+        async function submitUpdatedOffer(tradeId) {
+            if (!window.receiverSelectedItems || !window.receiverSelectedItems[tradeId] || window.receiverSelectedItems[tradeId].length === 0) {
+                alert('Please select at least one item to offer');
+                return;
+            }
+            
+            try {
+                console.log('Submitting updated offer:', window.receiverSelectedItems[tradeId]);
+                
+                const response = await fetch('/trade/receiver_offer_items', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tradeId,
+                        offeredItems: window.receiverSelectedItems[tradeId]
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    alert('✅ Your updated offer has been sent! The provider will review your new items.');
+                    window.receiverSelectedItems[tradeId] = [];
+                    await loadTrades();
+                } else {
+                    alert('Error: ' + (data.message || 'Failed to submit offer'));
+                }
+            } catch (error) {
+                console.error('Error submitting offer:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
