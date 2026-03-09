@@ -8,6 +8,10 @@
 
 Reducing food waste through intelligent inventory management, smart trading, and AI-powered recipe generation.
 
+🌐 **Live Demo**: [https://gro-sential-ai.onrender.com](https://gro-sential-ai.onrender.com)
+
+💡 **Best viewed on laptops, desktops, or tablets in landscape mode for optimal experience**
+
 Created by **Suhas Reddy Kotla** | [GitHub](https://github.com/Kotlasuhasreddy123) | [LinkedIn](https://www.linkedin.com/in/suhasreddykotla)
 
 ---
