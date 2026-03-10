@@ -1,5 +1,7 @@
 # 🥗 Gro-Sential AI
 
+![Gro-Sential AI Banner](image.png)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![AWS](https://img.shields.io/badge/AWS-Bedrock%20%7C%20DynamoDB-orange.svg)](https://aws.amazon.com/)
