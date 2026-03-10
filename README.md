@@ -1,6 +1,6 @@
 # 🥗 Gro-Sential AI
 
-![Gro-Sential AI Banner](image.png)
+![Gro-Sential AI - Food Waste to Organized Inventory](cover-banner.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
