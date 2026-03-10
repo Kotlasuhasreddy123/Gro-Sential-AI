@@ -8,7 +8,9 @@
 
 Reducing food waste through intelligent inventory management, smart trading, and AI-powered recipe generation.
 
-🌐 **Live Demo**: [https://gro-sential-ai.onrender.com](https://gro-sential-ai.onrender.com)
+📖 **Read the Full Article**: [AWS Builders - AIdeas 2025](https://builder.aws.com/content/3AjyCEomS3A3EW2rRuRWuoR8Af7/aideas-gro-sential-ai-ai-powered-food-waste-reduction-platform)
+
+🌐 **Try the Live Demo**: Link available in the article above
 
 💡 **Best viewed on laptops, desktops, or tablets in landscape mode for optimal experience**
 
