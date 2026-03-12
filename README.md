@@ -129,8 +129,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📧 Contact
 
 **Suhas Reddy Kotla**
-- Email: suhasreddykotla@lewisu.edu
-- LinkedIn: [linkedin.com/in/suhasreddykotla](https://www.linkedin.com/in/suhasreddykotla)
+- Email: suhasreddykotla222@gmail.com
+- LinkedIn: [linkedin.com/in/suhasreddykotla](https://www.linkedin.com/in/kotla-suhas-reddy)
 - GitHub: [@Kotlasuhasreddy123](https://github.com/Kotlasuhasreddy123)
 
 ---
