@@ -1,7 +1,7 @@
 {
   "name": "Gro-Sential AI",
   "short_name": "Gro-Sential",
-  "description": "AI-powered food waste reduction. Scan groceries, get recipes, trade with neighbors.",
+  "description": "Stop wasting food. Scan groceries, get recipes, trade with neighbors.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0e27",
@@ -9,77 +9,38 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/static/icons/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/static/icons/icon-96.png",
+      "src": "/favicon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/static/icons/icon-128.png",
-      "sizes": "128x128",
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/static/icons/icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/static/icons/icon-152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/static/icons/icon-192.png",
+      "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/static/icons/icon-384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/static/icons/icon-512.png",
+      "src": "/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ],
   "categories": ["food", "lifestyle", "utilities"],
-  "screenshots": [
-    {
-      "src": "/static/screenshots/mobile-home.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow"
-    }
-  ],
   "shortcuts": [
     {
       "name": "Scan Food",
       "short_name": "Scan",
-      "description": "Scan your groceries with AI",
+      "description": "Scan your groceries",
       "url": "/?action=scan",
-      "icons": [{ "src": "/static/icons/icon-96.png", "sizes": "96x96" }]
-    },
-    {
-      "name": "My Inventory",
-      "short_name": "Inventory",
-      "description": "View your food inventory",
-      "url": "/?action=inventory",
-      "icons": [{ "src": "/static/icons/icon-96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/favicon-96x96.png", "sizes": "96x96" }]
     }
   ]
 }

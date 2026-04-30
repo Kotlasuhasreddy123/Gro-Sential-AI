@@ -162,6 +162,8 @@ def apple_touch_icon():
     return send_file('apple-touch-icon.png', mimetype='image/png')
 
 # ── Food GIF routes for Perfect Plate visualization ──────────────────────
+import os as _os
+
 @app.route('/food-gif/<filename>')
 def food_gif(filename):
     """Serve food GIF files for the Perfect Plate visualization"""
@@ -178,8 +180,14 @@ def food_gif(filename):
     ]
     if filename not in allowed:
         return '', 404
+    # Use absolute path relative to this file
+    base_dir = _os.path.dirname(_os.path.abspath(__file__))
+    filepath = _os.path.join(base_dir, filename)
+    if not _os.path.exists(filepath):
+        print(f"⚠️ GIF not found: {filepath}")
+        return '', 404
     mimetype = 'image/webp' if filename.endswith('.webp') else 'image/gif'
-    return send_file(filename, mimetype=mimetype)
+    return send_file(filepath, mimetype=mimetype)
 
 @app.route('/scan', methods=['POST'])
 def scan_image():
