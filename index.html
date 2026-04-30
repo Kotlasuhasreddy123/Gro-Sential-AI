@@ -2,12 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Gro-Sential - Smart Food Management</title>
+
+    <!-- SEO Meta Tags -->
+    <title>Gro-Sential AI — Stop Wasting Food. Start Saving Money.</title>
+    <meta name="description" content="AI-powered food waste reduction app. Scan groceries, get expiry alerts, generate recipes, and trade surplus food with neighbors. Free to use.">
+    <meta name="keywords" content="food waste app, expiry date tracker, AI recipe generator, food inventory, reduce food waste, grocery tracker">
+    <meta name="author" content="Suhas Reddy Kotla">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph (for social sharing) -->
+    <meta property="og:title" content="Gro-Sential AI — Stop Wasting Food">
+    <meta property="og:description" content="AI-powered food waste reduction. Scan groceries, get recipes, trade with neighbors. Free.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gro-sential-ai.onrender.com">
+    <meta property="og:image" content="https://gro-sential-ai.onrender.com/static/og-image.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Gro-Sential AI — Stop Wasting Food">
+    <meta name="twitter:description" content="AI-powered food waste reduction. Free app.">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gro-Sential">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
+
+    <!-- Google Analytics — replace G-XXXXXXXXXX with your real ID from analytics.google.com -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', { anonymize_ip: true });
+    </script>
+
+    <!-- Microsoft Clarity — replace with your real ID from clarity.microsoft.com -->
+    <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "XXXXXXXXXX");
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lottie for food animations -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -460,6 +508,177 @@
             👋 Welcome to Gro-Sential! We're so glad you're here 💚
         </span>
     </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- D: Cookie Consent Banner                                -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(10,14,39,0.98);border-top:1px solid rgba(76,175,80,0.4);padding:16px 20px;backdrop-filter:blur(12px);">
+      <div style="max-width:900px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between;">
+        <div style="flex:1;min-width:260px;">
+          <p style="font-size:0.85em;color:#c5cae9;margin:0;line-height:1.5;">
+            🍪 We use cookies and Google Analytics to improve your experience. Our AI (AWS Bedrock + Rekognition) processes your food photos to identify items.
+            <a href="/privacy" style="color:#4CAF50;text-decoration:underline;">Privacy Policy</a> · <a href="/terms" style="color:#4CAF50;text-decoration:underline;">Terms</a>
+          </p>
+        </div>
+        <div style="display:flex;gap:10px;flex-shrink:0;">
+          <button onclick="acceptCookies()" style="background:#4CAF50;color:white;border:none;padding:10px 20px;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.9em;">Accept All</button>
+          <button onclick="declineCookies()" style="background:transparent;color:#9fa8da;border:1px solid rgba(255,255,255,0.2);padding:10px 16px;border-radius:8px;cursor:pointer;font-size:0.9em;">Decline</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Show cookie banner if not yet accepted
+      if (!localStorage.getItem('cookieConsent')) {
+        document.getElementById('cookieBanner').style.display = 'block';
+      }
+      function acceptCookies() {
+        localStorage.setItem('cookieConsent', 'accepted');
+        document.getElementById('cookieBanner').style.display = 'none';
+        if (typeof gtag !== 'undefined') gtag('consent', 'update', { analytics_storage: 'granted' });
+      }
+      function declineCookies() {
+        localStorage.setItem('cookieConsent', 'declined');
+        document.getElementById('cookieBanner').style.display = 'none';
+      }
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- A: PWA Install Banner                                   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="installBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:10000;background:linear-gradient(135deg,#1b5e20,#2e7d32);padding:12px 20px;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.4);">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:1.5em;">🌱</span>
+        <div>
+          <div style="font-weight:700;font-size:0.95em;color:white;">Install Gro-Sential AI</div>
+          <div style="font-size:0.8em;color:rgba(255,255,255,0.8);">Add to home screen for the best experience</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-shrink:0;">
+        <button id="installBtn" style="background:white;color:#2e7d32;border:none;padding:8px 18px;border-radius:20px;font-weight:700;cursor:pointer;font-size:0.85em;">Install</button>
+        <button id="dismissInstall" style="background:transparent;color:white;border:1px solid rgba(255,255,255,0.4);padding:8px 12px;border-radius:20px;cursor:pointer;font-size:0.85em;">✕</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- B: Mobile Bottom Navigation Bar                         -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <style>
+      .mobile-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 500;
+        background: rgba(10,14,39,0.97);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(76,175,80,0.25);
+        padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+      }
+      .mobile-nav-inner {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+      .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 6px 12px;
+        cursor: pointer;
+        color: #9fa8da;
+        font-size: 0.65em;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: color 0.2s;
+        border: none;
+        background: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .mobile-nav-item.active { color: #4CAF50; }
+      .mobile-nav-item span { font-size: 1.5em; line-height: 1; }
+      .mobile-nav-scan {
+        background: linear-gradient(135deg, #4CAF50, #81C784);
+        color: white !important;
+        border-radius: 50%;
+        width: 52px;
+        height: 52px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: -16px;
+        box-shadow: 0 4px 20px rgba(76,175,80,0.5);
+        font-size: 0.6em !important;
+        gap: 1px;
+      }
+      @media (max-width: 768px) {
+        .mobile-nav { display: block; }
+        body { padding-bottom: 70px; }
+        /* Larger touch targets on mobile */
+        .btn, button { min-height: 44px; }
+        input, select, textarea { min-height: 44px; font-size: 16px !important; }
+        /* Prevent zoom on input focus iOS */
+        input[type="text"], input[type="email"], input[type="password"] { font-size: 16px !important; }
+      }
+    </style>
+
+    <nav class="mobile-nav" role="navigation" aria-label="Main navigation">
+      <div class="mobile-nav-inner">
+        <button class="mobile-nav-item" onclick="scrollToSection('heroSection')" aria-label="Home">
+          <span>🏠</span>Home
+        </button>
+        <button class="mobile-nav-item" onclick="scrollToModeToggle('personal')" aria-label="Scan food">
+          <span>📸</span>Scan
+        </button>
+        <button class="mobile-nav-scan mobile-nav-item" onclick="scrollToModeToggle('personal')" aria-label="Scan food - main action">
+          <span style="font-size:1.6em">🌱</span>
+        </button>
+        <button class="mobile-nav-item" onclick="scrollToModeToggle('community')" aria-label="Trade food">
+          <span>🤝</span>Trade
+        </button>
+        <button class="mobile-nav-item" onclick="showLogin()" aria-label="Account">
+          <span>👤</span>Account
+        </button>
+      </div>
+    </nav>
+    <script>
+      function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+      function scrollToModeToggle(mode) {
+        const toggle = document.querySelector('.mode-toggle');
+        if (toggle) {
+          toggle.scrollIntoView({ behavior: 'smooth' });
+          // Auto-click the right mode button after scroll
+          setTimeout(() => {
+            const btns = document.querySelectorAll('.mode-btn');
+            if (mode === 'personal' && btns[0]) btns[0].click();
+            if (mode === 'community' && btns[1]) btns[1].click();
+          }, 400);
+        }
+      }
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- E: Lottie Food Animations (injected into recipe area)   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <style>
+      .lottie-cooking {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 16px;
+        display: none;
+      }
+      .lottie-cooking.visible { display: block; }
+      .lottie-scan-anim {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 8px;
+      }
+    </style>
 
     <!-- AWS Powered Bar -->
     <div style="background: rgba(10,14,39,0.98); border-bottom: 1px solid rgba(255,153,0,0.3); padding: 6px 40px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;">
@@ -2909,5 +3128,108 @@
             }
         }
     </script>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- Footer with Legal Links                                 -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <footer style="background:rgba(5,8,20,0.95);border-top:1px solid rgba(76,175,80,0.15);padding:32px 24px 100px;text-align:center;">
+      <div style="max-width:600px;margin:0 auto;">
+        <div style="font-size:1.4em;margin-bottom:8px;">🌱</div>
+        <div style="font-weight:700;color:#4CAF50;margin-bottom:4px;">Gro-Sential AI</div>
+        <div style="font-size:0.8em;color:#9fa8da;margin-bottom:20px;">Reducing food waste, one meal at a time.</div>
+        <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:16px;">
+          <a href="/privacy" style="color:#9fa8da;text-decoration:none;font-size:0.85em;transition:color 0.2s;" onmouseover="this.style.color='#4CAF50'" onmouseout="this.style.color='#9fa8da'">Privacy Policy</a>
+          <a href="/terms" style="color:#9fa8da;text-decoration:none;font-size:0.85em;transition:color 0.2s;" onmouseover="this.style.color='#4CAF50'" onmouseout="this.style.color='#9fa8da'">Terms of Service</a>
+          <a href="mailto:suhasreddykotla222@gmail.com" style="color:#9fa8da;text-decoration:none;font-size:0.85em;transition:color 0.2s;" onmouseover="this.style.color='#4CAF50'" onmouseout="this.style.color='#9fa8da'">Contact</a>
+          <a href="https://github.com/Kotlasuhasreddy123/Gro-Sential-AI" target="_blank" style="color:#9fa8da;text-decoration:none;font-size:0.85em;transition:color 0.2s;" onmouseover="this.style.color='#4CAF50'" onmouseout="this.style.color='#9fa8da'">GitHub</a>
+        </div>
+        <div style="font-size:0.75em;color:#616161;">
+          © 2026 Gro-Sential AI · Built by <a href="https://kotlasuhasreddy123.github.io" style="color:#4CAF50;text-decoration:none;">Suhas Reddy Kotla</a> · AWS AIdeas Top 300 / 10,000
+        </div>
+        <div style="font-size:0.7em;color:#424242;margin-top:8px;">
+          AI suggestions are for informational purposes only and are not a substitute for professional food safety advice.
+        </div>
+      </div>
+    </footer>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- A: PWA Service Worker Registration                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('[PWA] Service Worker registered:', reg.scope))
+            .catch(err => console.log('[PWA] Service Worker failed:', err));
+        });
+      }
+
+      // PWA Install Prompt
+      let deferredPrompt;
+      const installBanner = document.getElementById('installBanner');
+      const installBtn = document.getElementById('installBtn');
+      const dismissInstall = document.getElementById('dismissInstall');
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (installBanner) installBanner.style.display = 'flex';
+      });
+
+      if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+              gtag('event', 'pwa_install', { event_category: 'PWA' });
+            }
+            deferredPrompt = null;
+            installBanner.style.display = 'none';
+          }
+        });
+      }
+
+      if (dismissInstall) {
+        dismissInstall.addEventListener('click', () => {
+          installBanner.style.display = 'none';
+          localStorage.setItem('installDismissed', 'true');
+        });
+      }
+
+      // Don't show if already dismissed
+      if (localStorage.getItem('installDismissed')) {
+        if (installBanner) installBanner.style.display = 'none';
+      }
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- C: Analytics Event Tracking                             -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <script>
+      // Track key user actions
+      function trackEvent(action, category, label) {
+        if (typeof gtag !== 'undefined') {
+          gtag('event', action, { event_category: category, event_label: label });
+        }
+      }
+
+      // Track scan button clicks
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('[onclick*="scan"]') || e.target.closest('#scanBtn')) {
+          trackEvent('scan_initiated', 'Feature', 'Food Scan');
+        }
+        if (e.target.closest('[onclick*="recipe"]') || e.target.closest('#recipeBtn')) {
+          trackEvent('recipe_generated', 'Feature', 'Recipe Generation');
+        }
+        if (e.target.closest('[onclick*="trade"]')) {
+          trackEvent('trade_initiated', 'Feature', 'Community Trade');
+        }
+        if (e.target.closest('[onclick*="login"]') || e.target.closest('[onclick*="register"]')) {
+          trackEvent('auth_attempt', 'Auth', 'Login/Register');
+        }
+      });
+    </script>
+
 </body>
 </html>

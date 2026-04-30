@@ -93,11 +93,29 @@ except Exception as e:
 @app.route('/')
 def home():
     response = send_file('index.html')
-    # Force no caching
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '-1'
     return response
+
+@app.route('/privacy')
+def privacy():
+    return send_file('privacy.html')
+
+@app.route('/terms')
+def terms():
+    return send_file('terms.html')
+
+@app.route('/sw.js')
+def service_worker():
+    response = send_file('sw.js', mimetype='application/javascript')
+    response.headers['Service-Worker-Allowed'] = '/'
+    response.headers['Cache-Control'] = 'no-cache'
+    return response
+
+@app.route('/manifest.json')
+def manifest():
+    return send_file('manifest.json', mimetype='application/manifest+json')
 
 @app.route('/scan', methods=['POST'])
 def scan_image():
