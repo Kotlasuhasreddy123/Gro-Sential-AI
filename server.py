@@ -59,6 +59,29 @@ def get_expiry_color(status):
 app = Flask(__name__)
 CORS(app)
 
+# ── RATE LIMITING — prevent AI token abuse ────────────────────────────────
+from collections import defaultdict
+import time
+
+# Per-IP: max 5 AI recipe calls per hour
+AI_RATE_LIMIT = 5
+AI_RATE_WINDOW = 3600  # 1 hour in seconds
+_rate_store = defaultdict(list)  # ip -> [timestamps]
+
+def check_rate_limit(ip):
+    """Returns (allowed: bool, remaining: int, reset_in: int)"""
+    now = time.time()
+    window_start = now - AI_RATE_WINDOW
+    # Clean old entries
+    _rate_store[ip] = [t for t in _rate_store[ip] if t > window_start]
+    count = len(_rate_store[ip])
+    if count >= AI_RATE_LIMIT:
+        oldest = _rate_store[ip][0]
+        reset_in = int(AI_RATE_WINDOW - (now - oldest))
+        return False, 0, reset_in
+    _rate_store[ip].append(now)
+    return True, AI_RATE_LIMIT - count - 1, 0
+
 # --- AWS CONFIGURATION ---
 AWS_REGION = os.environ.get('AWS_DEFAULT_REGION', 'us-east-2')
 ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY_ID')
@@ -116,6 +139,11 @@ def service_worker():
 @app.route('/manifest.json')
 def manifest():
     return send_file('manifest.json', mimetype='application/manifest+json')
+
+@app.route('/ping')
+def ping():
+    """Keep-alive endpoint — prevents Render free tier from sleeping"""
+    return jsonify({"status": "alive", "time": str(datetime.now())})
 
 @app.route('/favicon.ico')
 def favicon_ico():
@@ -682,6 +710,17 @@ def generate_recipe_ai():
             "status": "error",
             "message": "AWS Bedrock not configured"
         }), 500
+
+    # Rate limiting — 5 AI calls per IP per hour
+    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    allowed, remaining, reset_in = check_rate_limit(client_ip)
+    if not allowed:
+        mins = reset_in // 60
+        return jsonify({
+            "status": "rate_limited",
+            "message": f"AI recipe limit reached (5/hour). Try again in {mins} minute(s).",
+            "reset_in_seconds": reset_in
+        }), 429
     
     try:
         data = request.json
@@ -758,10 +797,10 @@ AVAILABLE INGREDIENTS:
 
 Please generate a complete, detailed recipe now."""
 
-        # Call AWS Bedrock Claude 3 Haiku (cost-effective)
+        # Call AWS Bedrock Claude 3.5 Haiku (updated — Haiku v1 deprecated Sept 2026)
         request_body = {
             "anthropic_version": "bedrock-2023-05-31",
-            "max_tokens": 2000,
+            "max_tokens": 1500,
             "messages": [
                 {
                     "role": "user",
@@ -772,10 +811,10 @@ Please generate a complete, detailed recipe now."""
             "top_p": 0.9
         }
         
-        print("  🤖 Calling AWS Bedrock Claude 3...")
+        print("  🤖 Calling AWS Bedrock Claude 3.5 Haiku...")
         response = bedrock_runtime.invoke_model(
-            # Use cross-region inference profile (new AWS requirement)
-            modelId='us.anthropic.claude-3-haiku-20240307-v1:0',
+            # Claude 3.5 Haiku — faster, cheaper, not deprecated
+            modelId='us.anthropic.claude-3-5-haiku-20241022-v1:0',
             body=json.dumps(request_body)
         )
         

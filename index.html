@@ -542,13 +542,6 @@
 </head>
 <body>
 
-    <!-- Welcome Banner -->
-    <div id="welcomeBanner" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(129, 199, 132, 0.1) 100%); padding: 12px 20px; text-align: center; border-bottom: 2px solid rgba(76, 175, 80, 0.3);">
-        <span style="font-size: 1.1em; color: var(--primary); font-weight: 600; letter-spacing: 0.5px;">
-            👋 Welcome to Gro-Sential! We're so glad you're here 💚
-        </span>
-    </div>
-
     <!-- ═══════════════════════════════════════════════════════ -->
     <!-- D: Cookie Consent Banner                                -->
     <!-- ═══════════════════════════════════════════════════════ -->
@@ -723,7 +716,7 @@
     <!-- AWS Powered Bar -->
     <div style="background: rgba(10,14,39,0.98); border-bottom: 1px solid rgba(255,153,0,0.3); padding: 6px 40px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;">
         <span style="font-size: 0.72em; color: #ff9900; font-weight: 600; letter-spacing: 0.05em;">⚡ POWERED BY AWS</span>
-        <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,153,0,0.1);border:1px solid rgba(255,153,0,0.3);border-radius:20px;padding:3px 10px;font-size:0.7em;color:#ffb84d;">🤖 Bedrock (Claude 3 Haiku)</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,153,0,0.1);border:1px solid rgba(255,153,0,0.3);border-radius:20px;padding:3px 10px;font-size:0.7em;color:#ffb84d;">🤖 Bedrock (Claude 3.5 Haiku)</span>
         <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,153,0,0.1);border:1px solid rgba(255,153,0,0.3);border-radius:20px;padding:3px 10px;font-size:0.7em;color:#ffb84d;">📸 Rekognition</span>
         <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,153,0,0.1);border:1px solid rgba(255,153,0,0.3);border-radius:20px;padding:3px 10px;font-size:0.7em;color:#ffb84d;">💾 DynamoDB</span>
         <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);border-radius:20px;padding:3px 10px;font-size:0.7em;color:#81C784;">🏆 AWS AIdeas Top 300</span>
@@ -3191,6 +3184,79 @@
         </div>
       </div>
     </footer>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- Keep-Alive Ping — prevents Render free tier sleep       -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <script>
+      // Ping every 10 minutes to keep Render from sleeping
+      setInterval(() => {
+        fetch('/ping').catch(() => {});
+      }, 10 * 60 * 1000);
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- Recipe Loading Screen                                   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="recipeLoadingScreen" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(10,14,39,0.97);backdrop-filter:blur(8px);flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+      <div style="max-width:320px;padding:24px;">
+        <!-- Lottie cooking animation -->
+        <lottie-player
+          src="https://assets9.lottiefiles.com/packages/lf20_ysas4vcp.json"
+          background="transparent"
+          speed="1"
+          style="width:200px;height:200px;margin:0 auto;"
+          loop autoplay>
+        </lottie-player>
+        <div style="font-size:1.4em;font-weight:700;color:#4CAF50;margin-bottom:8px;" id="loadingTitle">🍳 Generating Your Recipe...</div>
+        <div style="font-size:0.9em;color:#9fa8da;margin-bottom:24px;" id="loadingSubtitle">AWS Bedrock AI is crafting something delicious</div>
+        <!-- Animated steps -->
+        <div style="display:flex;flex-direction:column;gap:10px;text-align:left;">
+          <div class="loading-step" id="step1" style="display:flex;align-items:center;gap:10px;opacity:0.4;transition:opacity 0.5s;">
+            <span style="font-size:1.2em;">📸</span><span style="font-size:0.85em;color:#e8eaf6;">Analyzing your ingredients</span>
+          </div>
+          <div class="loading-step" id="step2" style="display:flex;align-items:center;gap:10px;opacity:0.4;transition:opacity 0.5s;">
+            <span style="font-size:1.2em;">🤖</span><span style="font-size:0.85em;color:#e8eaf6;">Claude AI crafting recipe</span>
+          </div>
+          <div class="loading-step" id="step3" style="display:flex;align-items:center;gap:10px;opacity:0.4;transition:opacity 0.5s;">
+            <span style="font-size:1.2em;">🎨</span><span style="font-size:0.85em;color:#e8eaf6;">Preparing visual presentation</span>
+          </div>
+          <div class="loading-step" id="step4" style="display:flex;align-items:center;gap:10px;opacity:0.4;transition:opacity 0.5s;">
+            <span style="font-size:1.2em;">✨</span><span style="font-size:0.85em;color:#e8eaf6;">Almost ready!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function showRecipeLoading() {
+        const screen = document.getElementById('recipeLoadingScreen');
+        screen.style.display = 'flex';
+        // Animate steps sequentially
+        const steps = ['step1','step2','step3','step4'];
+        steps.forEach((id, i) => {
+          setTimeout(() => {
+            document.getElementById(id).style.opacity = '1';
+          }, i * 800);
+        });
+      }
+      function hideRecipeLoading() {
+        document.getElementById('recipeLoadingScreen').style.display = 'none';
+        // Reset steps
+        ['step1','step2','step3','step4'].forEach(id => {
+          document.getElementById(id).style.opacity = '0.4';
+        });
+      }
+      // Hook into existing recipe generation calls
+      const _origFetch = window.fetch;
+      window.fetch = function(url, opts) {
+        if (typeof url === 'string' && (url.includes('generate_recipe_ai') || url.includes('generate_recipe'))) {
+          showRecipeLoading();
+          return _origFetch(url, opts).then(r => { hideRecipeLoading(); return r; })
+                                      .catch(e => { hideRecipeLoading(); throw e; });
+        }
+        return _origFetch(url, opts);
+      };
+    </script>
 
     <!-- ═══════════════════════════════════════════════════════ -->
     <!-- A: PWA Service Worker Registration                      -->
