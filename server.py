@@ -117,6 +117,22 @@ def service_worker():
 def manifest():
     return send_file('manifest.json', mimetype='application/manifest+json')
 
+@app.route('/favicon.ico')
+def favicon_ico():
+    return send_file('favicon.ico', mimetype='image/x-icon')
+
+@app.route('/favicon-96x96.png')
+def favicon_96():
+    return send_file('favicon-96x96.png', mimetype='image/png')
+
+@app.route('/favicon.svg')
+def favicon_svg():
+    return send_file('favicon.svg', mimetype='image/svg+xml')
+
+@app.route('/apple-touch-icon.png')
+def apple_touch_icon():
+    return send_file('apple-touch-icon.png', mimetype='image/png')
+
 @app.route('/scan', methods=['POST'])
 def scan_image():
     """Scan uploaded image using AWS Rekognition to detect food ingredients"""
