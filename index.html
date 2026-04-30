@@ -624,6 +624,71 @@
             .card { padding: 14px 12px; }
             .btn { font-size: 0.88rem; }
         }
+
+        /* ── Feature cards & section headings — mobile size fix ── */
+        @media (max-width: 768px) {
+            /* Section headings */
+            h2[style*="font-size: 2em"],
+            div[style*="font-size: 2em; color: var(--primary)"] {
+                font-size: 1.3rem !important;
+            }
+            /* Feature card icons */
+            div[style*="font-size: 4em"],
+            div[style*="font-size: 3em"],
+            div[style*="font-size: 2.5em"] {
+                font-size: 2rem !important;
+            }
+            /* Feature card titles */
+            h3[style*="color: var(--primary)"],
+            h3[style*="font-size: 1.5em"],
+            h3[style*="font-size: 1.4em"],
+            h3[style*="font-size: 1.3em"] {
+                font-size: 1rem !important;
+            }
+            /* Feature card body text */
+            p[style*="font-size: 1.1em"],
+            p[style*="font-size: 1em"],
+            div[style*="font-size: 1.1em; color: var(--text-dim)"],
+            div[style*="font-size: 1em; color: var(--text-dim)"] {
+                font-size: 0.85rem !important;
+                line-height: 1.5 !important;
+            }
+            /* Feature card padding */
+            div[style*="padding: 40px"],
+            div[style*="padding: 35px"],
+            div[style*="padding: 30px; text-align: center"] {
+                padding: 16px !important;
+            }
+            /* How it works steps */
+            div[style*="font-size: 1.5em; font-weight: 700; color: white"] {
+                font-size: 1.1rem !important;
+            }
+            /* Step description text */
+            div[style*="font-size: 0.95em; color: var(--text-dim)"],
+            div[style*="font-size: 1em; color: var(--text-dim)"] {
+                font-size: 0.82rem !important;
+            }
+            /* Step number circles */
+            div[style*="width: 60px; height: 60px"],
+            div[style*="width: 50px; height: 50px"] {
+                width: 40px !important;
+                height: 40px !important;
+                font-size: 1rem !important;
+            }
+            /* Recipe/Trade mode intro cards */
+            div[style*="font-size: 2.5em; margin-bottom"] {
+                font-size: 1.8rem !important;
+            }
+            h2[style*="font-size: 2em; font-weight: 700; color: var(--primary)"],
+            h2[style*="font-size: 1.8em"] {
+                font-size: 1.25rem !important;
+            }
+            /* Checklist items */
+            li[style*="font-size: 1.1em"],
+            li[style*="font-size: 1em"] {
+                font-size: 0.88rem !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -635,7 +700,7 @@
       <div style="max-width:900px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between;">
         <div style="flex:1;min-width:260px;">
           <p style="font-size:0.85em;color:#c5cae9;margin:0;line-height:1.5;">
-            🍪 We use cookies and Google Analytics to improve your experience. Our AI (AWS Bedrock + Rekognition) processes your food photos to identify items.
+            🍪 We use cookies and analytics to improve your experience. Our AI processes your food photos to identify ingredients.
             <a href="/privacy" style="color:#4CAF50;text-decoration:underline;">Privacy Policy</a> · <a href="/terms" style="color:#4CAF50;text-decoration:underline;">Terms</a>
           </p>
         </div>
@@ -799,15 +864,6 @@
       }
     </style>
 
-    <!-- AWS Powered Bar -->
-    <div style="background: rgba(10,14,39,0.98); border-bottom: 1px solid rgba(255,153,0,0.3); padding: 6px 40px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;">
-        <span style="font-size: 0.72em; color: #ff9900; font-weight: 600; letter-spacing: 0.05em;">⚡ POWERED BY AWS</span>
-        <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,153,0,0.1);border:1px solid rgba(255,153,0,0.3);border-radius:20px;padding:3px 10px;font-size:0.7em;color:#ffb84d;">🤖 Bedrock (Claude 3.5 Haiku)</span>
-        <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,153,0,0.1);border:1px solid rgba(255,153,0,0.3);border-radius:20px;padding:3px 10px;font-size:0.7em;color:#ffb84d;">📸 Rekognition</span>
-        <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,153,0,0.1);border:1px solid rgba(255,153,0,0.3);border-radius:20px;padding:3px 10px;font-size:0.7em;color:#ffb84d;">💾 DynamoDB</span>
-        <span style="display:inline-flex;align-items:center;gap:5px;background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);border-radius:20px;padding:3px 10px;font-size:0.7em;color:#81C784;">🏆 AWS AIdeas Top 300</span>
-    </div>
-
     <!-- Header -->
     <header>
         <div class="header-content">
@@ -879,7 +935,7 @@
             <div style="margin-top: 25px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="font-size: 1.5em;">🤖</span>
-                    <span style="color: var(--text-dim);">AWS AI-Powered</span>
+                    <span style="color: var(--text-dim);">AI-Powered</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="font-size: 1.5em;">🌍</span>
@@ -1057,49 +1113,35 @@
                 </div>
 
                 <!-- ═══════════════════════════════════════════════════ -->
-                <!-- "THE PERFECT PLATE" — 3D Visualization              -->
+                <!-- "THE PERFECT PLATE" — GIF Food Visualization         -->
                 <!-- ═══════════════════════════════════════════════════ -->
-                <div class="card" id="perfectPlateCard" style="background:linear-gradient(135deg,rgba(20,10,5,0.95),rgba(40,20,10,0.9));border:1px solid rgba(255,180,50,0.3);overflow:hidden;position:relative;">
-                  <!-- Cinematic header -->
-                  <div style="text-align:center;margin-bottom:20px;">
-                    <div style="font-size:0.75em;letter-spacing:0.2em;color:#f59e0b;text-transform:uppercase;margin-bottom:4px;">✨ The Perfect Plate</div>
-                    <h3 style="font-size:1.2em;font-weight:700;color:#fef3c7;margin:0;">Your Dish — Visualized</h3>
-                    <p style="font-size:0.8em;color:#d97706;margin-top:4px;">Follow the recipe exactly and your dish will look like this</p>
+                <div class="card" id="perfectPlateCard" style="background:linear-gradient(135deg,#0d1f0d,#0a1a0a);border:1px solid rgba(76,175,80,0.25);overflow:hidden;padding:20px 16px;">
+                  <div style="text-align:center;margin-bottom:16px;">
+                    <div style="font-size:0.7em;letter-spacing:0.15em;color:#81C784;text-transform:uppercase;margin-bottom:4px;">✨ Your Dish Preview</div>
+                    <h3 style="font-size:1rem;font-weight:700;color:#e8f5e9;margin:0 0 4px;">How Your Meal Will Look</h3>
+                    <p style="font-size:0.78em;color:#66BB6A;margin:0;">Follow the recipe and your dish will look like this</p>
                   </div>
 
-                  <!-- 3D Scene Container -->
-                  <div id="plateScene" style="position:relative;width:100%;max-width:360px;margin:0 auto 20px;aspect-ratio:1;perspective:600px;">
-                    <!-- Ambient glow -->
-                    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,rgba(255,180,50,0.15) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
-                    <!-- Table surface -->
-                    <div id="tableTop" style="position:absolute;bottom:0;left:0;right:0;height:30%;background:linear-gradient(180deg,#3d2b1f,#2a1a0f);border-radius:0 0 12px 12px;transform:rotateX(20deg);transform-origin:bottom;"></div>
-                    <!-- Plate -->
-                    <div id="mainPlate" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotateX(55deg) scale(0);width:72%;aspect-ratio:1;border-radius:50%;background:radial-gradient(ellipse at 40% 35%,#ffffff,#e8e0d8);box-shadow:0 20px 60px rgba(0,0,0,0.6),inset 0 2px 8px rgba(255,255,255,0.8);transition:transform 0.8s cubic-bezier(0.34,1.56,0.64,1);">
-                      <!-- Plate rim -->
-                      <div style="position:absolute;inset:6%;border-radius:50%;border:2px solid rgba(200,190,180,0.5);"></div>
-                      <!-- Ingredient emojis container -->
-                      <div id="ingredientEmojis" style="position:absolute;inset:15%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;"></div>
-                      <!-- Steam effect -->
-                      <div id="steamEffect" style="position:absolute;top:-40px;left:50%;transform:translateX(-50%);display:none;">
-                        <div class="steam-particle" style="animation:steam 2s ease-out infinite;opacity:0;font-size:1.2em;">💨</div>
-                        <div class="steam-particle" style="animation:steam 2s ease-out 0.7s infinite;opacity:0;font-size:0.9em;margin-left:10px;">💨</div>
-                      </div>
+                  <!-- GIF Display -->
+                  <div id="dishGifContainer" style="position:relative;width:100%;max-width:300px;margin:0 auto 16px;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+                    <img id="dishGif" src="" alt="Your dish preview" style="width:100%;display:block;border-radius:16px;opacity:0;transition:opacity 0.5s;"/>
+                    <div id="gifLoadingPlaceholder" style="width:100%;aspect-ratio:1;background:linear-gradient(135deg,#1a2e1a,#0d1f0d);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:16px;gap:8px;">
+                      <div style="font-size:2.5em;">🍽️</div>
+                      <div style="font-size:0.8em;color:#66BB6A;">Preparing your dish preview...</div>
                     </div>
-                    <!-- Ingredients dropping in (assembly phase) -->
-                    <div id="assemblyIngredients" style="position:absolute;inset:0;pointer-events:none;"></div>
+                    <!-- Warm overlay -->
+                    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 60%,rgba(0,0,0,0.4));border-radius:16px;pointer-events:none;"></div>
                   </div>
 
-                  <!-- Phase label -->
-                  <div id="platePhaseLabel" style="text-align:center;margin-bottom:16px;">
-                    <span id="phaseBadge" style="display:inline-block;padding:6px 16px;background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.4);border-radius:20px;font-size:0.8em;color:#fbbf24;font-weight:600;">🥄 Assembling ingredients...</span>
-                  </div>
+                  <!-- Ingredient pills -->
+                  <div id="platePills" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:16px;"></div>
 
                   <!-- Controls -->
-                  <div id="plateControls" style="display:none;text-align:center;gap:12px;flex-wrap:wrap;justify-content:center;">
-                    <button onclick="replayPerfectPlate()" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;border:none;padding:12px 24px;border-radius:24px;font-weight:700;cursor:pointer;font-size:0.9em;display:inline-flex;align-items:center;gap:8px;">
-                      🔄 Replay Animation
+                  <div id="plateControls" style="display:none;gap:8px;flex-direction:column;align-items:stretch;">
+                    <button onclick="replayPerfectPlate()" style="background:linear-gradient(135deg,#4CAF50,#388E3C);color:white;border:none;padding:13px 20px;border-radius:12px;font-weight:700;cursor:pointer;font-size:0.9em;display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;">
+                      🔄 Watch Again
                     </button>
-                    <button onclick="document.getElementById('perfectPlateCard').scrollIntoView({behavior:'smooth'})" style="background:transparent;color:#f59e0b;border:1px solid rgba(245,158,11,0.4);padding:12px 24px;border-radius:24px;font-weight:600;cursor:pointer;font-size:0.9em;">
+                    <button onclick="document.getElementById('recipeContent').scrollIntoView({behavior:'smooth'})" style="background:rgba(76,175,80,0.12);color:#81C784;border:1px solid rgba(76,175,80,0.3);padding:13px 20px;border-radius:12px;font-weight:600;cursor:pointer;font-size:0.9em;min-height:48px;">
                       🍳 Start Cooking
                     </button>
                   </div>
@@ -3315,7 +3357,7 @@
           <a href="https://github.com/Kotlasuhasreddy123/Gro-Sential-AI" target="_blank" style="color:#9fa8da;text-decoration:none;font-size:0.85em;transition:color 0.2s;" onmouseover="this.style.color='#4CAF50'" onmouseout="this.style.color='#9fa8da'">GitHub</a>
         </div>
         <div style="font-size:0.75em;color:#616161;">
-          © 2026 Gro-Sential AI · Built by <a href="https://kotlasuhasreddy123.github.io" style="color:#4CAF50;text-decoration:none;">Suhas Reddy Kotla</a> · AWS AIdeas Top 300 / 10,000
+          © 2026 Gro-Sential AI · Built by <a href="https://kotlasuhasreddy123.github.io" style="color:#4CAF50;text-decoration:none;">Suhas Reddy Kotla</a>
         </div>
         <div style="font-size:0.7em;color:#424242;margin-top:8px;">
           AI suggestions are for informational purposes only and are not a substitute for professional food safety advice.
@@ -3324,169 +3366,103 @@
     </footer>
 
     <!-- ═══════════════════════════════════════════════════════ -->
-    <!-- "THE PERFECT PLATE" — 3D Visualization Engine           -->
+    <!-- "THE PERFECT PLATE" — GIF Visualization Engine          -->
     <!-- ═══════════════════════════════════════════════════════ -->
     <style>
-      @keyframes steam {
-        0%   { opacity:0.8; transform:translateY(0) scale(1); }
-        100% { opacity:0;   transform:translateY(-30px) scale(1.5); }
+      @keyframes gifFadeIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
+      @keyframes pillPop { from{opacity:0;transform:scale(0.7)} to{opacity:1;transform:scale(1)} }
+      .dish-pill {
+        display:inline-flex;align-items:center;gap:4px;
+        background:rgba(76,175,80,0.15);border:1px solid rgba(76,175,80,0.3);
+        border-radius:20px;padding:4px 10px;font-size:0.75em;color:#81C784;
+        animation:pillPop 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards;
       }
-      @keyframes dropIn {
-        0%   { transform:translateY(-120px) rotate(-20deg) scale(0.5); opacity:0; }
-        60%  { transform:translateY(10px) rotate(5deg) scale(1.1); opacity:1; }
-        100% { transform:translateY(0) rotate(0deg) scale(1); opacity:1; }
-      }
-      @keyframes plateReveal {
-        0%   { transform:translate(-50%,-50%) rotateX(55deg) scale(0); }
-        100% { transform:translate(-50%,-50%) rotateX(55deg) scale(1); }
-      }
-      @keyframes plateSpin {
-        0%   { transform:translate(-50%,-50%) rotateX(55deg) rotateZ(0deg) scale(1); }
-        100% { transform:translate(-50%,-50%) rotateX(55deg) rotateZ(360deg) scale(1); }
-      }
-      @keyframes shimmer {
-        0%,100% { box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 30px rgba(255,180,50,0.1); }
-        50%      { box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 60px rgba(255,180,50,0.3); }
-      }
-      .ingredient-drop { animation: dropIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards; }
     </style>
     <script>
-    // Ingredient → emoji mapping
-    const INGREDIENT_EMOJIS = {
-      tomato:'🍅', tomatoes:'🍅', carrot:'🥕', carrots:'🥕',
-      potato:'🥔', potatoes:'🥔', onion:'🧅', onions:'🧅',
-      garlic:'🧄', pepper:'🫑', cucumber:'🥒', lettuce:'🥬',
-      broccoli:'🥦', spinach:'🥬', cabbage:'🥬', mushroom:'🍄',
-      mushrooms:'🍄', corn:'🌽', avocado:'🥑', eggplant:'🍆',
-      apple:'🍎', banana:'🍌', orange:'🍊', lemon:'🍋',
-      lime:'🍋', grape:'🍇', strawberry:'🍓', blueberry:'🫐',
-      pineapple:'🍍', mango:'🥭', watermelon:'🍉', peach:'🍑',
-      cherry:'🍒', egg:'🥚', eggs:'🥚', cheese:'🧀',
-      milk:'🥛', butter:'🧈', chicken:'🍗', beef:'🥩',
-      pork:'🥩', fish:'🐟', salmon:'🐟', shrimp:'🦐',
-      bread:'🍞', rice:'🍚', pasta:'🍝', noodles:'🍜',
-      bean:'🫘', beans:'🫘', peanut:'🥜', nut:'🥜',
-      oil:'🫙', salt:'🧂', pepper_spice:'🌶️', herb:'🌿',
-      basil:'🌿', cilantro:'🌿', ginger:'🫚', default:'🥗'
-    };
+    // Food GIFs — mapped by dish category
+    const FOOD_GIFS = [
+      '/food-gif/6d848f6ee35a0dc8f363e87f515dc2e4.gif',
+      '/food-gif/c5f958f3df4103d980635e73a37198d6.gif',
+      '/food-gif/2dfood-food.gif',
+      '/food-gif/ba1f3c47e64ecaa566cdc3e716f309d1.gif',
+      '/food-gif/giphy-38.gif',
+      '/food-gif/PeelingBeetsOverheadFacebook.gif'
+    ];
 
-    function getEmoji(ingredient) {
-      const lower = ingredient.toLowerCase();
-      for (const [key, emoji] of Object.entries(INGREDIENT_EMOJIS)) {
-        if (lower.includes(key)) return emoji;
-      }
+    // Pick GIF based on main ingredient
+    function pickFoodGif(ingredients) {
+      const main = (ingredients[0] || '').toLowerCase();
+      if (main.includes('beet') || main.includes('root')) return '/food-gif/PeelingBeetsOverheadFacebook.gif';
+      if (main.includes('salad') || main.includes('lettuce') || main.includes('green')) return '/food-gif/6d848f6ee35a0dc8f363e87f515dc2e4.gif';
+      if (main.includes('pasta') || main.includes('noodle') || main.includes('rice')) return '/food-gif/c5f958f3df4103d980635e73a37198d6.gif';
+      if (main.includes('egg') || main.includes('breakfast')) return '/food-gif/giphy-38.gif';
+      // Default: cycle through based on ingredient count
+      return FOOD_GIFS[ingredients.length % FOOD_GIFS.length];
+    }
+
+    const INGREDIENT_EMOJIS = {
+      tomato:'🍅',carrot:'🥕',potato:'🥔',onion:'🧅',garlic:'🧄',
+      pepper:'🫑',cucumber:'🥒',lettuce:'🥬',broccoli:'🥦',spinach:'🥬',
+      mushroom:'🍄',corn:'🌽',avocado:'🥑',eggplant:'🍆',apple:'🍎',
+      banana:'🍌',orange:'🍊',lemon:'🍋',egg:'🥚',cheese:'🧀',
+      milk:'🥛',chicken:'🍗',beef:'🥩',fish:'🐟',bread:'🍞',
+      rice:'🍚',pasta:'🍝',bean:'🫘',peanut:'🥜',default:'🥗'
+    };
+    function getEmoji(ing) {
+      const l = ing.toLowerCase();
+      for(const [k,v] of Object.entries(INGREDIENT_EMOJIS)) if(l.includes(k)) return v;
       return INGREDIENT_EMOJIS.default;
     }
 
-    // Dish color themes based on main ingredient
-    function getDishTheme(ingredients) {
-      const main = (ingredients[0] || '').toLowerCase();
-      if (main.includes('tomato') || main.includes('pepper')) return { bg:'#c0392b', accent:'#e74c3c' };
-      if (main.includes('carrot') || main.includes('orange')) return { bg:'#e67e22', accent:'#f39c12' };
-      if (main.includes('broccoli') || main.includes('spinach') || main.includes('lettuce')) return { bg:'#27ae60', accent:'#2ecc71' };
-      if (main.includes('egg') || main.includes('cheese')) return { bg:'#f1c40f', accent:'#f39c12' };
-      if (main.includes('chicken') || main.includes('beef') || main.includes('pork')) return { bg:'#8B4513', accent:'#A0522D' };
-      if (main.includes('fish') || main.includes('salmon')) return { bg:'#e74c3c', accent:'#c0392b' };
-      if (main.includes('rice') || main.includes('pasta')) return { bg:'#f5f5dc', accent:'#daa520' };
-      return { bg:'#27ae60', accent:'#2ecc71' };
-    }
-
     let _plateIngredients = [];
-    let _plateAnimTimeout = null;
 
     function launchPerfectPlate(ingredients) {
       if (!ingredients || ingredients.length === 0) return;
       _plateIngredients = ingredients;
 
-      const plate = document.getElementById('mainPlate');
-      const assembly = document.getElementById('assemblyIngredients');
-      const emojiContainer = document.getElementById('ingredientEmojis');
-      const steam = document.getElementById('steamEffect');
-      const badge = document.getElementById('phaseBadge');
+      const gifEl = document.getElementById('dishGif');
+      const placeholder = document.getElementById('gifLoadingPlaceholder');
+      const pills = document.getElementById('platePills');
       const controls = document.getElementById('plateControls');
-
-      if (!plate) return;
+      if (!gifEl) return;
 
       // Reset
-      if (_plateAnimTimeout) clearTimeout(_plateAnimTimeout);
-      plate.style.transform = 'translate(-50%,-50%) rotateX(55deg) scale(0)';
-      plate.style.transition = 'none';
-      assembly.innerHTML = '';
-      emojiContainer.innerHTML = '';
-      steam.style.display = 'none';
+      gifEl.style.opacity = '0';
+      placeholder.style.display = 'flex';
       controls.style.display = 'none';
-      badge.textContent = '🥄 Assembling ingredients...';
-      badge.parentElement.style.display = 'block';
+      pills.innerHTML = '';
 
-      const theme = getDishTheme(ingredients);
-
-      // Phase 1: Drop ingredients from above (0-2s)
-      const topIngredients = ingredients.slice(0, 6);
-      topIngredients.forEach((ing, i) => {
-        const emoji = getEmoji(ing);
-        const el = document.createElement('div');
-        el.style.cssText = `position:absolute;font-size:1.8em;top:${15+Math.random()*60}%;left:${10+Math.random()*75}%;opacity:0;z-index:10;`;
-        el.textContent = emoji;
-        assembly.appendChild(el);
-        setTimeout(() => {
-          el.classList.add('ingredient-drop');
-          el.style.opacity = '1';
-        }, i * 280);
+      // Show ingredient pills
+      ingredients.slice(0, 8).forEach((ing, i) => {
+        const pill = document.createElement('span');
+        pill.className = 'dish-pill';
+        pill.style.animationDelay = `${i * 80}ms`;
+        pill.textContent = `${getEmoji(ing)} ${ing}`;
+        pills.appendChild(pill);
       });
 
-      // Phase 2: Plate appears (2.2s)
-      _plateAnimTimeout = setTimeout(() => {
-        badge.textContent = '🍽️ Plating your dish...';
-        assembly.innerHTML = '';
-        plate.style.transition = 'transform 0.9s cubic-bezier(0.34,1.56,0.64,1)';
-        plate.style.transform = 'translate(-50%,-50%) rotateX(55deg) scale(1)';
-
-        // Fill plate with ingredient emojis
-        const plateEmojis = ingredients.slice(0, 8);
-        plateEmojis.forEach((ing, i) => {
-          const span = document.createElement('span');
-          span.textContent = getEmoji(ing);
-          span.style.cssText = `font-size:${1.2 - i*0.05}em;opacity:0;transition:opacity 0.3s;transition-delay:${0.1+i*0.12}s;`;
-          emojiContainer.appendChild(span);
-          setTimeout(() => { span.style.opacity = '1'; }, 900 + i * 120);
-        });
-
-        // Color the plate center
-        plate.style.background = `radial-gradient(ellipse at 40% 35%,#ffffff,#f0ece8),radial-gradient(ellipse at 60% 65%,${theme.bg}22,transparent)`;
-
-      }, 2200);
-
-      // Phase 3: Spin reveal (3.5s)
-      _plateAnimTimeout = setTimeout(() => {
-        badge.textContent = '✨ Your perfect dish is ready!';
-        plate.style.transition = 'transform 1.2s ease-in-out, box-shadow 1.2s ease';
-        plate.style.transform = 'translate(-50%,-50%) rotateX(55deg) rotateZ(360deg) scale(1)';
-        plate.style.boxShadow = `0 20px 60px rgba(0,0,0,0.6),0 0 40px ${theme.accent}44`;
-
-        setTimeout(() => {
-          plate.style.transition = 'transform 0.5s ease, box-shadow 2s ease infinite alternate';
-          plate.style.transform = 'translate(-50%,-50%) rotateX(55deg) scale(1)';
-          plate.style.animation = 'shimmer 3s ease infinite';
-        }, 1200);
-
-      }, 3500);
-
-      // Phase 4: Steam + controls (5s)
-      _plateAnimTimeout = setTimeout(() => {
-        steam.style.display = 'block';
-        badge.textContent = '🔥 Hot and ready to serve!';
+      // Load GIF
+      const gifSrc = pickFoodGif(ingredients);
+      gifEl.onload = () => {
+        placeholder.style.display = 'none';
+        gifEl.style.opacity = '1';
+        gifEl.style.animation = 'gifFadeIn 0.6s ease forwards';
         controls.style.display = 'flex';
-      }, 5000);
+      };
+      gifEl.onerror = () => {
+        // Fallback to next gif
+        const fallback = FOOD_GIFS[Math.floor(Math.random() * FOOD_GIFS.length)];
+        gifEl.src = fallback;
+      };
+      gifEl.src = gifSrc + '?t=' + Date.now(); // cache bust for replay
     }
 
     function replayPerfectPlate() {
       launchPerfectPlate(_plateIngredients);
     }
 
-    // Hook into recipe generation — trigger visualization after recipe loads
-    const _origRecipeSection = window.showRecipeSection;
     function triggerPlateVisualization(ingredients) {
-      setTimeout(() => launchPerfectPlate(ingredients), 500);
+      setTimeout(() => launchPerfectPlate(ingredients), 600);
     }
     </script>
 

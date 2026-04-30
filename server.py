@@ -161,6 +161,26 @@ def favicon_svg():
 def apple_touch_icon():
     return send_file('apple-touch-icon.png', mimetype='image/png')
 
+# ── Food GIF routes for Perfect Plate visualization ──────────────────────
+@app.route('/food-gif/<filename>')
+def food_gif(filename):
+    """Serve food GIF files for the Perfect Plate visualization"""
+    allowed = [
+        '6d848f6ee35a0dc8f363e87f515dc2e4.gif',
+        'c5f958f3df4103d980635e73a37198d6.gif',
+        '2dfood-food.gif',
+        'ba1f3c47e64ecaa566cdc3e716f309d1.gif',
+        'd6e48d23146713.5631dfb6afc94.gif',
+        'giphy-38.gif',
+        'PeelingBeetsOverheadFacebook.gif',
+        'tumblr_60c27db8f087da22903250b4b0f7ed64_ed10dc0c_540.webp',
+        '39440f22902851.5631a2bdc94bd.gif'
+    ]
+    if filename not in allowed:
+        return '', 404
+    mimetype = 'image/webp' if filename.endswith('.webp') else 'image/gif'
+    return send_file(filename, mimetype=mimetype)
+
 @app.route('/scan', methods=['POST'])
 def scan_image():
     """Scan uploaded image using AWS Rekognition to detect food ingredients"""
