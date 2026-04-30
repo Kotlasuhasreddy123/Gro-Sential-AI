@@ -797,24 +797,19 @@ AVAILABLE INGREDIENTS:
 
 Please generate a complete, detailed recipe now."""
 
-        # Call AWS Bedrock Claude 3.5 Haiku (updated — Haiku v1 deprecated Sept 2026)
+        # Call AWS Bedrock Claude 3 Haiku — cheapest Anthropic model ($0.25/1M input)
+        # Note: Deprecated Sept 2026 — switch to claude-3-5-haiku then
         request_body = {
             "anthropic_version": "bedrock-2023-05-31",
             "max_tokens": 1500,
-            "messages": [
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
+            "messages": [{"role": "user", "content": prompt}],
             "temperature": 0.7,
             "top_p": 0.9
         }
-        
-        print("  🤖 Calling AWS Bedrock Claude 3.5 Haiku...")
+
+        print("  🤖 Calling AWS Bedrock Claude 3 Haiku...")
         response = bedrock_runtime.invoke_model(
-            # Claude 3.5 Haiku — faster, cheaper, not deprecated
-            modelId='us.anthropic.claude-3-5-haiku-20241022-v1:0',
+            modelId='us.anthropic.claude-3-haiku-20240307-v1:0',
             body=json.dumps(request_body)
         )
         
