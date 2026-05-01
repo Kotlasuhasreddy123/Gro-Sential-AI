@@ -1727,11 +1727,35 @@
                     document.getElementById('recipeSection').scrollIntoView({ behavior: 'smooth' });
                 } else {
                     console.error('AI Recipe generation failed:', data);
-                    alert('Failed to generate recipe: ' + (data.message || 'Unknown error'));
+                    // Show friendly error in the recipe section instead of alert
+                    const recipeContent = document.getElementById('recipeContent');
+                    const recipeSection = document.getElementById('recipeSection');
+                    if (data.status === 'rate_limited') {
+                        recipeContent.innerHTML = `<div style="text-align:center;padding:24px;color:#ff9800;">
+                            ⏱️ <strong>Slow down, chef!</strong><br><br>
+                            You've used your recipe limit for this hour. Come back in a bit!<br>
+                            <small style="color:#9fa8da;margin-top:8px;display:block;">${data.message}</small>
+                        </div>`;
+                    } else {
+                        recipeContent.innerHTML = `<div style="text-align:center;padding:24px;color:#ef5350;">
+                            🔧 <strong>Recipe engine is warming up</strong><br><br>
+                            Our AI chef is getting ready. Please try again in a moment.<br>
+                            <small style="color:#9fa8da;margin-top:8px;display:block;">If this keeps happening, the AI service may need a moment to activate.</small>
+                        </div>`;
+                    }
+                    recipeSection.classList.remove('hidden');
+                    recipeSection.scrollIntoView({ behavior: 'smooth' });
                 }
             } catch (error) {
                 console.error('Error in generateRecipe:', error);
-                alert('Error: ' + error.message);
+                const recipeContent = document.getElementById('recipeContent');
+                const recipeSection = document.getElementById('recipeSection');
+                recipeContent.innerHTML = `<div style="text-align:center;padding:24px;color:#ef5350;">
+                    🌐 <strong>Connection issue</strong><br><br>
+                    Check your internet and try again.<br>
+                    <small style="color:#9fa8da;margin-top:8px;display:block;">${error.message}</small>
+                </div>`;
+                recipeSection.classList.remove('hidden');
             }
         }
 
